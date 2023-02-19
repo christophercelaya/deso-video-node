@@ -207,3 +207,8 @@ export default formatBytes
 export const removeQueryParam = (url) => {
   return hasQueryParams(url) ? url.substring(0, url.indexOf('?')) : url
 }
+
+
+export const capitalizeText = (text) => {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}

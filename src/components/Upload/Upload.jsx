@@ -6,9 +6,11 @@ import DropZone from './DropZone'
 import Deso from 'deso-protocol'
 import UploadForm from './Form'
 import toast from 'react-hot-toast'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useCreateAsset } from '@livepeer/react';
-import { VIDEO_CDN_URL } from '@utils/constants'
+import { SERVER_URL } from '@utils/constants'
+import axios from 'axios'
+
+const deso = new Deso();
 
 function Upload() {
     const {isLoggedIn, user} = usePersistStore()
@@ -16,17 +18,8 @@ function Upload() {
     const setUploadedVideo = useAppStore((state) => state.setUploadedVideo)
     const setResetUploadedVideo = useAppStore((state) => state.setResetUploadedVideo)
     const router = useRouter();
-    const [deso, setDeso] = useState(null)
-    const supabase = useSupabaseClient()
     const [newPostHash, setNewPostHash] = useState(null)
     const [loading, setLoading] = useState(false)
-
-
-    useEffect(() => {
-        const deso = new Deso();
-        setDeso(deso)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -40,7 +33,7 @@ function Upload() {
         // we use a `const` assertion here to provide better Typescript types
         // for the returned data
         uploadedVideo.file
-        ? { sources: [{ name: uploadedVideo.file.name, file: uploadedVideo.file }] }
+        ? { sources: [{ name: uploadedVideo.file.name, file: uploadedVideo.file }], noWait: true, }
         : null,
     );
 
@@ -53,7 +46,7 @@ function Upload() {
 
     useEffect(() => {
         progress?.[0].phase === 'failed'
-            ? toast.error('Failed to process video.')
+            ? toast.error('Failed to upload video.')
             : progress?.[0].phase === 'waiting'
                 ? setUploadedVideo({ buttonText: 'Waiting', percentText: 'Waiting', loading: true, percent: 0 })
                 : progress?.[0].phase === 'uploading'
@@ -67,14 +60,14 @@ function Upload() {
     }, [progress])
 
     useEffect(() => {
-        if (status === 'loading' || (assets?.[0] && assets[0].status?.phase !== 'ready')) {
+        if (status === 'loading' || (assets?.[0] && assets[0].status?.phase !== 'waiting')) {
             setLoading(true);
         } else {
             setLoading(false);
         }
-        if (assets && assets[0] && assets[0].status?.phase === 'ready') {
-            const videoURL = `https://livepeer-vod.studio/hls/${assets[0]?.playbackId}/video` //`${VIDEO_CDN_URL}/asset/${assets[0]?.playbackId}/video`
-            setUploadedVideo({ videoURL: videoURL, playbackId: assets[0]?.playbackId })
+        if (assets && assets[0] && assets[0].status?.phase === 'waiting') {
+            const videoURL = `https://livepeer-vod.studio/hls/${assets[0]?.playbackId}/video`
+            setUploadedVideo({ videoURL: videoURL, playbackId: assets[0]?.playbackId, asset_id: assets[0]?.id, loading: true, readyToPost: true })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status, assets])
@@ -116,7 +109,7 @@ function Upload() {
                 BodyObj: {
                     Body: body,
                     ImageURLs: [],
-                    VideoURLs: [`https://lvpr.tv/?v=${uploadedVideo.playbackId}`],
+                    VideoURLs: [`https://lvpr.tv/?v=${uploadedVideo.playbackId}&autoplay=false`],
                 },
                 PostExtraData: {
                     Videso: JSON.stringify(extraData),
@@ -126,30 +119,6 @@ function Upload() {
             if (result && result.submittedTransactionResponse.PostEntryResponse.PostHashHex) {
                 const newPost = result.submittedTransactionResponse.PostEntryResponse.PostHashHex
                 setNewPostHash(newPost)
-                setUploadedVideo({ videoHash: newPost, readyToPost: false })
-                console.log('new post hash', newPost);
-                // try {
-                //     const payload2 = {
-                //         PostHashHexToModify: newPost,
-                //         UpdaterPublicKeyBase58Check: user.profile.PublicKeyBase58Check,
-                //         BodyObj: {
-                //             Body: body,
-                //             VideoURLs: [],
-                //             ImageURLs: []
-                //         },
-                //         PostExtraData: {
-                //             EmbedVideoURL: `https://embed.videso.xyz/${newPost}`,
-                //         }
-                //     }
-                //     const result2 = await deso.posts.submitPost(payload2);
-                //     if (result2 && result2.submittedTransactionResponse.PostEntryResponse.PostHashHex) {
-                //         setNewPostHash(newPost)
-                //         setUploadedVideo({ videoHash: newPost, readyToPost: false })
-                //     }
-                // } catch (error) {
-                //     console.log(error)
-                //     toast.error(`Error: ${error.message}`);
-                // }
             }
         } catch (error) {
             console.log(error)
@@ -158,28 +127,41 @@ function Upload() {
     }
     
     const saveToDB = async () => {
-         try {
-            const { data: post, error } = await supabase.from('uploads').select('*').eq('posthash', newPostHash).eq('user', user.profile.PublicKeyBase58Check);
-            if (post.length > 0) {
-               
-            } else {
-                const request = { user: user.profile.PublicKeyBase58Check, posthash: newPostHash, category: uploadedVideo.videoCategory.tag }
-                supabase.from('uploads').insert([request]).then((res) => {
-                    if (res.error) {
-                        console.log(video.PostHashHex, 'upload', res.error);
-                    }
-                })
+        try {
+            const request = {
+                title: uploadedVideo.title,
+                description: uploadedVideo.description,
+                category: uploadedVideo.videoCategory.tag,
+                tags: JSON.stringify(uploadedVideo.tags),
+                user_id: user.profile.PublicKeyBase58Check,
+                posthash: newPostHash,
+                language: uploadedVideo.language,
+                thumbnail: uploadedVideo.thumbnail,
+                isSensitiveContent: uploadedVideo.isSensitiveContent,
+                isNSFW: uploadedVideo.isNSFW,
+                isNSFWThumbnail: uploadedVideo.isNSFWThumbnail,
+                playbackId: uploadedVideo.playbackId,
+                isLivePeer: true,
+                asset_id: uploadedVideo.asset_id,
+                duration: uploadedVideo.durationInSeconds
             }
-            
+            const {data} = await axios.post(`${SERVER_URL}/create-video`, request) 
+            if (data?.data?.id) {
+                toast.success('Congratulations! Post Created.');
+                setResetUploadedVideo()
+                setTimeout(() => {
+                    router.push(`/@${user.profile.Username}`)
+                }, 500)
+            }
         } catch (error) {
-            console.log(video.PostHashHex, 'upload', error);
+            console.log('video upload', error.message); 
         }
     }
 
     const checkFieldsData = () => {
         if (uploadedVideo.title !== '' || uploadedVideo.description !== '') {
             return true;
-        }
+        } 
         return false
     }
 

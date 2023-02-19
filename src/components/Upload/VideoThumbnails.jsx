@@ -22,10 +22,11 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
 
     const uploadThumbnail = async (file) => {
         setUploadedVideo({ uploadingThumbnail: true })
+        const deso = new Deso();
         try {
-            const deso = new Deso();
             const request = undefined;  
             const jwt = await deso.identity.getJwt(request);
+            console.log('jwt', jwt);
             const response = await UploadImage(jwt, file, user.profile.PublicKeyBase58Check)
             afterUpload(response.data.ImageURL, file.type || 'image/jpeg')
             return response.data.ImageURL

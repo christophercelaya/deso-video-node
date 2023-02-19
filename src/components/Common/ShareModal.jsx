@@ -29,7 +29,7 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
   const [copy] = useCopyToClipboard()
 
   const onCopyVideoUrl = async () => {
-    await copy(`${APP.URL}/watch/${video.PostHashHex}`)
+    await copy(`${APP.URL}/watch/${video?.id}`)
     toast.success('Link copied to clipboard')
   }
 
@@ -55,8 +55,8 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
             </div>
             <div className='md:mr-4 mr-0'>
               <WhatsappShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
-                title={video.Body ? video.Body : APP.Description}
+                url={`${APP.URL}/watch/${video?.id}`}
+                title={video?.title ? video?.title : APP.Description}
                 separator=":: "
                 blankTarget={true}
               >
@@ -65,8 +65,8 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
             </div>
             <div className='md:mr-4 mr-0'>
               <TwitterShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
-                title={`${video.Body ? video.Body : APP.Description}`}
+                url={`${APP.URL}/watch/${video?.id}`}
+                title={`${video?.title ? video?.title : APP.Description}`}
                 via={APP.Twitter}
                 blankTarget={true}
               >
@@ -75,8 +75,8 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
             </div>
             <div className='md:mr-4 mr-0'>
               <FacebookShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
-                quote={`${video.Body ? video.Body : APP.Description} via ${APP.Twitter}`}
+                url={`${APP.URL}/watch/${video?.id}`}
+                quote={`${video?.title ? video?.title : APP.Description} via ${APP.Twitter}`}
                 hashtag={'#Videso'}
                 blankTarget={true}
               >
@@ -85,9 +85,9 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
             </div>
             <div className='md:mr-4 mr-0'>
               <EmailShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
+                url={`${APP.URL}/watch/${video?.id}`}
                 subject={APP.Name}
-                body={video.Body ? video.Body : APP.Description}
+                body={video?.title ? video?.title : APP.Description}
                 blankTarget={true}
               >
                 <EmailIcon size={44} round />
@@ -95,8 +95,8 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
             </div>
             <div className='md:mr-4 mr-0'>
               <PinterestShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
-                quote={`${video.Body ? video.Body : APP.Description} via ${APP.Twitter}`}
+                url={`${APP.URL}/watch/${video?.id}`}
+                quote={`${video?.title ? video?.title : APP.Description} via ${APP.Twitter}`}
                 blankTarget={true}
               >
                 <PinterestIcon size={44} round />
@@ -104,22 +104,22 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
             </div>
             <div className='md:mr-4 mr-0'>
               <RedditShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
-                quote={`${video.Body ? video.Body : APP.Description} via ${APP.Twitter}`}
+                url={`${APP.URL}/watch/${video?.id}`}
+                quote={`${video?.title ? video?.title : APP.Description} via ${APP.Twitter}`}
                 blankTarget={true}
               >
                 <RedditIcon size={44} round />
               </RedditShareButton>
             </div>
             <div className='md:mr-4 mr-0'>
-              <LinkedinShareButton url={`${APP.URL}/watch/${video.PostHashHex}`}>
+              <LinkedinShareButton url={`${APP.URL}/watch/${video?.id}`}>
                 <LinkedinIcon size={44} round />
               </LinkedinShareButton>
             </div>
             <div className='md:mr-4 mr-0'>
               <TelegramShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
-                quote={`${video.Body ? video.Body : APP.Description} via ${APP.Twitter}`}
+                url={`${APP.URL}/watch/${video?.id}`}
+                quote={`${video?.title ? video?.title : APP.Description} via ${APP.Twitter}`}
                 blankTarget={true}
               >
                 <TelegramIcon size={44} round />
@@ -127,8 +127,8 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
             </div>
             <div className='md:mr-4 mr-0'>
               <TumblrShareButton
-                url={`${APP.URL}/watch/${video.PostHashHex}`}
-                quote={`${video.Body ? video.Body : APP.Description} via ${APP.Twitter}`}
+                url={`${APP.URL}/watch/${video?.id}`}
+                quote={`${video?.title ? video?.title : APP.Description} via ${APP.Twitter}`}
                 blankTarget={true}
               >
                 <TumblrIcon size={44} round />
@@ -138,7 +138,7 @@ const ShareModal = ({ rootRef, show, setShowShare, video }) => {
         </SimpleBar>  
         <div className="items-center justify-between p-3 py-3 border shadow-inner customBorder bg-primary dark:border-gray-800 rounded-xl hidden md:flex">
           <div className="text-sm truncate select-all pr-2">
-            {APP.URL}/watch/{video.PostHashHex}
+            {APP.URL}/watch/{video?.id}
           </div>
           <button
             className="ml-2 focus:outline-none primary-button py-2 px-4 font-semibold text-sm rounded-full"

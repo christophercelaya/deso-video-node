@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { getProfilePicture } from '@utils/functions/getProfilePicture'
 import { Button } from '@components/UI/Button'
 import { useEffect, useState } from 'react'
@@ -26,7 +27,7 @@ const NewComment = ({ video, refetch }) => {
                     Body: comment,
                     ImageURLs: [],
                 },
-                ParentStakeID: video.PostHashHex,
+                ParentStakeID: video.Post.PostHashHex,
                 UpdaterPublicKeyBase58Check: user.profile.PublicKeyBase58Check,
             };
             try {

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { timeNow } from '@utils/functions'
 import { LinkifyOptions } from '@utils/functions/getLinkifyOptions'
 import { getProfilePicture } from '@utils/functions/getProfilePicture'
@@ -7,12 +8,10 @@ import Link from 'next/link'
 import "linkify-plugin-hashtag"
 import "linkify-plugin-mention"
 import { useEffect, useState } from 'react'
-import { AiOutlinePlayCircle } from 'react-icons/ai'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
 import IsVerified from '../../Common/IsVerified'
 import Reactions from '../Reactions'
 import { getProfileName } from '@utils/functions/getProfileName'
-import VideoMeta from '../VideoMeta'
 
 const Comment = ({ comment }) => {
     const [clamped, setClamped] = useState(false)
@@ -91,7 +90,7 @@ const Comment = ({ comment }) => {
                         </div>
                     )}
                     <div className="mt-1 flex items-center space-x-1">
-                        <Reactions iconSize={14} showTipButton={false} showButton={false} video={comment} />
+                        <Reactions iconSize={14} showTipButton={false} showButton={false} isComment={true} video={comment} />
                     </div>
                 </div>
             </div>

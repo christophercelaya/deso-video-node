@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { getProfilePicture } from '@utils/functions/getProfilePicture';
 import ChannelLinks from './Links';
 import Tooltip from '../UI/Tooltip';
@@ -64,9 +65,9 @@ function ChannelInfo({ following, followers, channel }) {
             <div className="flex flex-col w-full md:-mt-5 mb-4">
                 <div style={{
                     backgroundImage: `url(${cover})`,
-                    backgroundPosition: 'center',
+                    backgroundPosition: 'left center',
                     
-                }} className="bg-gray-300 bg-no-repeat w-full bg-cover object-cover relative md:h-72 h-28 dark:bg-gray-700">
+                }} className="bg-gray-300 bg-no-repeat w-full bg-cover object-cover relative md:h-[300px] h-28 dark:bg-gray-700">
                     <ChannelLinks channel={channel} />
                 </div>
                 <div className="relative z-10 max-w-7xl w-full mx-auto flex items-center md:space-x-5">

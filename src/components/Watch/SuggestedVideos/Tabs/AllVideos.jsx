@@ -17,10 +17,9 @@ function AllVideos({video, currentVideoId}) {
     const user = usePersistStore((state) => state.user)
     const isLoggedIn = usePersistStore((state) => state.isLoggedIn)
     const reader = isLoggedIn ? user.PublicKeyBase58Check : '';
-    //const { isError, error, isSuccess, hasNextPage, isFetchingNextPage, fetchNextPage, data:videos } = FetchSuggestedFeed( -1, 15 );
-    const { isSuccess, isLoading, isError, error, hasNextPage, isFetchingNextPage, fetchNextPage, data: videos } = useInfiniteQuery(['suggested-feed'], ({ pageParam = recentlyWatched }) => GetSuggestedFeed(-1, reader, 15, pageParam),
+    const { isSuccess, isLoading, isError, error, hasNextPage, isFetchingNextPage, fetchNextPage, data: videos } = useInfiniteQuery(['suggested-feed'], ({ pageParam = recentlyWatched }) => GetSuggestedFeed(reader, 15, pageParam, currentVideoId),
         {
-            enabled: !!id,
+            enabled: !!currentVideoId,
             getNextPageParam: (lastPage, pages) => {
                 if(lastPage === null) {
                     return null;
@@ -43,28 +42,18 @@ function AllVideos({video, currentVideoId}) {
         }
     }, [inView, fetchNextPage])
 
-    useEffect(() => {
-        if (isSuccess && videos) {
-            const nextVideo = videos.pages[0].find((video) => video.PostHashHex !== currentVideoId)
-            setUpNextVideo(nextVideo)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSuccess, videos, currentVideoId, setUpNextVideo])
-
     const channel = video.ProfileEntryResponse;
 
     return (
         <>
             {isSuccess ? (
                 videos.pages.map(page => 
-                    getShuffleArray(page).map(video => {
-                        if (video.PostHashHex !== currentVideoId) {
-                            return (
-                                !video.IsHidden && <SuggestedVideoCard video={video} key={video?.PostHashHex} />
-                            )
-                        }
-                    })
-                )
+                page.map(video => {
+                  return (
+                    <SuggestedVideoCard userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video} />
+                  )
+                })
+              )
             ): <SuggestedVideosShimmer />}
         
         </>

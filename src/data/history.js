@@ -1,29 +1,49 @@
-import { BASE_URI } from "@app/utils/constants";
+import { SERVER_URL } from "@app/utils/constants";
 import axios from "axios";
-import { fetchAllPosts } from "./api";
+import { getPost, getPostAssociations, getUserProfile } from "./videos";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
-export const getFeed = async (data, reader) => {
-    const endpoint = 'get-single-post';
-    const posts = [];
-    for (let i = 0; i < data.length; i++) {
-        const response = await axios.post(`${BASE_URI}/${endpoint}`, {
-            ReaderPublicKeyBase58Check: reader,
-            PostHashHex: data[i].posthash
-        });
-        if (response === null) {
-            return null
-        } else {
-            const post = response.data.PostFound;
-            if (!post.IsHidden) {
-                posts.push(post);
-            }
+export const GetHistoryFeed = async (limit, reader, page = 0) => {
+    const response = await axios.post(`${SERVER_URL}/history`, { limit: limit, user_id : reader, page: page })
+    const posts = response.data.data;
+    if (posts && posts.length > 0) {
+        for( let i = 0; i < posts.length; i++) {
+            const userProfile = await getUserProfile(posts[i].videos.user_id)
+            const chainPost = await getPost(posts[i].videos.posthash, reader)
+            const associationsCount = await getPostAssociations(posts[i].videos.posthash)
+            posts[i].ProfileEntryResponse = userProfile
+            posts[i].videos.Post = chainPost
+            posts[i].videos.AssociationsCount = associationsCount
         }
+        return posts
+    } else {
+        return []
     }
-    return posts
 }
 
-export const GetHistoryFeed = async (list, reader, pageParam = 0, output = 32) => {
-    const fullPosts = await fetchAllPosts(reader, list);
-    
-    return fullPosts.splice(0, output)
+export const FetchHistoryFeed = (limit, reader) => {
+    return useQuery(['history-feed'], () => GetHistoryFeed(limit, reader));
+}
+
+export const FetchInfiniteHistoryFeed = async (limit, reader) => {
+    return useInfiniteQuery(['infinite-history-feed'], ({ pageParam = 0 }) => GetHistoryFeed(limit, reader, pageParam),
+        {
+            getNextPageParam: (lastPage, pages) => {
+                if(lastPage === null) {
+                    return 0;
+                } else {
+                    return lastPage.nextCursor;
+                }
+            }
+        }
+    );
+}
+
+export const addToHistory = async(video_id, user_id) => {
+    try {
+        const { data } = await axios.post(`${SERVER_URL}/add-to-history`, { video_id, user_id });
+        return data.data
+    } catch (error) {
+        console.log('added-to-history', error.message);
+    }
 }

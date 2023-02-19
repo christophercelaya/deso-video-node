@@ -13,7 +13,7 @@ function RecentVideos() {
   const user = usePersistStore((state) => state.user)
   const isLoggedIn = usePersistStore((state) => state.isLoggedIn)
   const reader = isLoggedIn ? user.profile.PublicKeyBase58Check : APP.PublicKeyBase58Check;
-  const { isError, error, isSuccess, hasNextPage, isFetchingNextPage, fetchNextPage, data: videos } = FetchInfiniteLatestFeed(-1, reader);  
+  const { isError, error, isSuccess, hasNextPage, isFetchingNextPage, fetchNextPage, data: videos } = FetchInfiniteLatestFeed(32, reader);  
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -31,6 +31,16 @@ function RecentVideos() {
     />
   }
 
+  if (videos?.pages[0]?.length === 0) {
+    return (
+      <NoDataFound
+        isCenter
+        withImage
+        text="No videos found"
+      />
+    )
+  }
+
   return (
     <>
       {
@@ -40,7 +50,7 @@ function RecentVideos() {
               {videos.pages.map(page => 
                 page.map(video => {
                   return (
-                    <VideoCard userProfile={video.ProfileEntryResponse} key={`${video.PostHashHex}`} video={video} />
+                    <VideoCard userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video} />
                   )
                 })
               )}
@@ -53,7 +63,7 @@ function RecentVideos() {
                       ? <Loader2 />
                       : hasNextPage
                       ? 'Load More'
-                      : 'Nothing more to load'}
+                      : null}
                 </div>
               </div>
             </div>

@@ -70,6 +70,7 @@ function UploadForm({onUpload, onCancel}) {
                                     placeholder="Title that describes your video"
                                     autoComplete="off"
                                     value={title}
+                                    required
                                     onFocus={() => null}
                                     onContentChange={(value) => {
                                         setTitle(value)
@@ -84,6 +85,7 @@ function UploadForm({onUpload, onCancel}) {
                                     label="Description"
                                     placeholder="Tell viewers about your video (type @ to mention a channel) or add #Hashtags"
                                     autoComplete="off"
+                                    required
                                     value={description}
                                     onFocus={() => null}
                                     onContentChange={(value) => {
@@ -101,7 +103,6 @@ function UploadForm({onUpload, onCancel}) {
                                 <label className='font-medium text-sm'>Language</label>
                                 <div>
                                     <Combobox value={language} onChange={setLanguage}>
-                                    {/* <Listbox value={language} onChange={setLanguage}> */}
                                         <div className="relative mt-1">
                                             <div className="relative w-full cursor-default overflow-hidden bg-primary border theme-border rounded-md text-left focus:outline-none focus-visible:ring-0 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-300 sm:text-sm">
                                                 <Combobox.Input
@@ -115,57 +116,57 @@ function UploadForm({onUpload, onCancel}) {
                                                         aria-hidden="true"
                                                     />
                                                 </Combobox.Button>
+                                            </div>
+                                            <Transition
+                                                as={Fragment}
+                                                leave="transition ease-in duration-100"
+                                                leaveFrom="opacity-100"
+                                                leaveTo="opacity-0"
+                                                afterLeave={() => setQuery('')}
+                                            >
+                                                <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md dropdown-shadow bg-dropdown py-1 text-base focus:outline-none sm:text-sm">
+                                                    {filteredLanguage.length === 0 && query !== '' ? (
+                                                        <div className="relative cursor-default select-none py-2 px-4 text-light">
+                                                            Nothing found.
+                                                        </div>
+                                                    ) : (
+                                                        filteredLanguage.map((lang) => (
+                                                            <Combobox.Option
+                                                                key={lang}
+                                                                className={({ active }) =>
+                                                                `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                                                    active ? 'bg-gray-100 dark:bg-gray-800' : 'dark:text-white text-gray-900'
+                                                                }`
+                                                                }
+                                                                value={lang}
+                                                            >
+                                                                {({ selected, active }) => (
+                                                                    <>
+                                                                        <span
+                                                                        className={`block truncate ${
+                                                                            selected ? 'font-medium' : 'font-normal'
+                                                                        }`}
+                                                                        >
+                                                                            {lang}
+                                                                        </span>
+                                                                        {selected ? (
+                                                                            <span
+                                                                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                                                                active ? 'text-white' : 'text-brand-600 dark:text-white'
+                                                                                }`}
+                                                                            >
+                                                                                <BsCheck className="h-5 w-5" aria-hidden="true" />
+                                                                            </span>
+                                                                        ) : null}
+                                                                    </>
+                                                                )}
+                                                            </Combobox.Option>
+                                                        ))
+                                                    )}
+                                                </Combobox.Options>
+                                            </Transition>
                                         </div>
-                                        <Transition
-                                            as={Fragment}
-                                            leave="transition ease-in duration-100"
-                                            leaveFrom="opacity-100"
-                                            leaveTo="opacity-0"
-                                            afterLeave={() => setQuery('')}
-                                        >
-                                            <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md dropdown-shadow bg-dropdown py-1 text-base focus:outline-none sm:text-sm">
-                                                {filteredLanguage.length === 0 && query !== '' ? (
-                                                    <div className="relative cursor-default select-none py-2 px-4 text-light">
-                                                        Nothing found.
-                                                    </div>
-                                                ) : (
-                                                filteredLanguage.map((lang) => (
-                                                    <Combobox.Option
-                                                        key={lang}
-                                                        className={({ active }) =>
-                                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                                            active ? 'bg-gray-100 dark:bg-gray-800' : 'dark:text-white text-gray-900'
-                                                        }`
-                                                        }
-                                                        value={lang}
-                                                    >
-                                                {({ selected, active }) => (
-                                                <>
-                                                    <span
-                                                    className={`block truncate ${
-                                                        selected ? 'font-medium' : 'font-normal'
-                                                    }`}
-                                                    >
-                                                    {lang}
-                                                    </span>
-                                                    {selected ? (
-                                                    <span
-                                                        className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                                        active ? 'text-white' : 'text-brand-600 dark:text-white'
-                                                        }`}
-                                                    >
-                                                        <BsCheck className="h-5 w-5" aria-hidden="true" />
-                                                    </span>
-                                                    ) : null}
-                                                </>
-                                                )}
-                                            </Combobox.Option>
-                                            ))
-                                        )}
-                                        </Combobox.Options>
-                                    </Transition>
-                                    </div>
-                                </Combobox>
+                                    </Combobox>
                                 </div>
                             </div>
                             <div className='flex flex-col space-y-2'>
@@ -218,7 +219,7 @@ function UploadForm({onUpload, onCancel}) {
                     </Button>
                     <Button
                         variant="light"
-                        disabled={uploadedVideo.loading || uploadedVideo.uploadingThumbnail || !uploadedVideo.thumbnail}
+                        disabled={uploadedVideo.loading || uploadedVideo.uploadingThumbnail}
                         onClick={() => onCancel()}
                         type="button"
                     >

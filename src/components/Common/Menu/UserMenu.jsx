@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import usePersistStore from '@store/persist';
 import toast from 'react-hot-toast'
 import Deso from 'deso-protocol'

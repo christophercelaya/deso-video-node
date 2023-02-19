@@ -4,6 +4,7 @@ import { RiVideoAddLine } from 'react-icons/ri'
 import DropMenu, { NextLink } from '../../UI/DropMenu'
 import { TfiPencilAlt, TfiVideoCamera } from "react-icons/tfi";
 import usePersistStore from '@store/persist';
+import { MdSensors } from 'react-icons/md';
 
 function NewVideoMenu() {
     const { query } = useRouter()
@@ -30,16 +31,16 @@ function NewVideoMenu() {
                                 Upload Video
                             </span>
                         </Menu.Item>
-                        {/* <Menu.Item
+                        <Menu.Item
                             as={NextLink}
-                            href={`/@${user.profile.Username}/community`}
+                            href={`/@${user.profile.Username}/livestreaming`}
                             className="inline-flex w-full items-center px-3 py-2 space-x-3 hover-primary"
                         >
-                            <TfiPencilAlt size="20" />
+                            <MdSensors size="20" />
                             <span className="truncate whitespace-nowrap">
-                                Create Post
+                                Live Stream
                             </span>
-                        </Menu.Item> */}
+                        </Menu.Item>
                     </div>
                 </div>
             </DropMenu>

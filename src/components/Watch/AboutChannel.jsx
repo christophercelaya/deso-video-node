@@ -4,16 +4,18 @@ import "linkify-plugin-hashtag"
 import "linkify-plugin-mention"
 import { useEffect, useState } from 'react'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
-import { timeNow } from '@utils/functions'
 import VideoMeta from './VideoMeta'
+import VideoViews from './VideoViews'
+import { CREATOR_VIDEO_CATEGORIES } from '@app/data/categories'
+import Link from 'next/link'
 
-const AboutChannel = ({views, video }) => {
+const AboutChannel = ({video }) => {
   const channel = video.ProfileEntryResponse
   const [clamped, setClamped] = useState(false)
   const [showMore, setShowMore] = useState(false)
 
   useEffect(() => {
-    if (video.Body.trim().length > 200) {
+    if (video?.description.trim().length > 200) {
       setClamped(true)
       setShowMore(true)
     }
@@ -23,15 +25,14 @@ const AboutChannel = ({views, video }) => {
     <div className="flex items-start justify-between w-full bg-secondary p-4 rounded-none md:rounded-xl">
       <div className="flex flex-col flex-1 overflow-hidden break-words">
         <div className='text-[14px] flex space-x-1 items-center font-medium mb-3'>
-          <span>{views > 1 ? `${views} views` : `${views} view`}</span>
+          {video ? <VideoViews video={video} /> : null}
           <span className='middot'></span>
-          {/* <span>{timeNow(video.TimestampNanos)}</span> */}
           <VideoMeta video={video} />
         </div>
-        {video.Body !== null && (
+        {video?.description !== null && (
           <div className="text-sm md:text-sm">
           <Linkify options={LinkifyOptions}>
-            {clamped ? video.Body.trim().substring(0, 200) : video.Body}
+            {clamped ? video?.description.trim().substring(0, 200) : video?.description}
             </Linkify>
           </div>
         )}
@@ -54,9 +55,19 @@ const AboutChannel = ({views, video }) => {
             </button>
           </div>
         )}
-        {/* <div className="flex justify-end mt-4">
-          <MetaInfo video={video} />
-        </div> */}
+        <div className="flex mt-4">
+          <div className="flex text-sm items-center space-x-2">
+            <span>Category:</span>
+            <Link
+              href={`/explore/${video?.category}`}
+              className="text-primary font-medium"
+            >
+              {
+                CREATOR_VIDEO_CATEGORIES.find((category) => category.tag === video?.category)?.name
+              }
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   )

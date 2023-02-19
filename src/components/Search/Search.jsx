@@ -53,6 +53,7 @@ const Search = () => {
       }
     }, 700)
     return () => clearTimeout(getData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword])
 
   const clearSearch = () => {
@@ -71,7 +72,7 @@ const Search = () => {
           <>
             <div className="md:w-[728px] flex" style={{flex: '0 1 728'}}>
               <div ref={ref} className='w-full mx-auto'>
-                <div className="relative mt-1">
+                <div className="relative">
                   <div className="relative w-full overflow-hidden cursor-default border shadow-inner customBorder bg-primary dark:border-gray-800 rounded-full">
                     <input
                       className="w-full py-2.5 pl-3 pr-10 bg-transparent focus:outline-none"

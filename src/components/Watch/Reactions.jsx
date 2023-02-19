@@ -13,13 +13,13 @@ import { IoDiamondOutline } from 'react-icons/io5'
 import DiamondModal from '../Common/DiamondsModal'
 import party from "party-js"
 
-const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondButton = true, isVertical = false, showButton = true}) => {
+const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondButton = true, isComment = false, showButton = true}) => {
     const {isLoggedIn, user } = usePersistStore()
     const [liking, setLiking] = useState(false)
-    const [liked, setLiked] = useState(video.PostEntryReaderState.LikedByReader)
-    const [diamondBestowed, setDiamondBestowed] = useState(video.PostEntryReaderState.DiamondLevelBestowed)
-    const [diamonds, setDiamonds] = useState(video.DiamondCount)
-    const [likes, setLikes] = useState(video.LikeCount);
+    const [liked, setLiked] = useState(isComment ? video?.PostEntryReaderState.LikedByReader : video?.Post?.PostEntryReaderState.LikedByReader)
+    const [diamondBestowed, setDiamondBestowed] = useState(isComment ? video?.PostEntryReaderState.DiamondLevelBestowed : video?.Post?.PostEntryReaderState.DiamondLevelBestowed)
+    const [diamonds, setDiamonds] = useState(isComment ? video?.DiamondCount : video?.Post?.DiamondCount)
+    const [likes, setLikes] = useState(isComment ? video?.LikeCount : video?.AssociationsCount?.LIKE + video?.Post?.LikeCount);
     const [showTip, setShowTip] = useState(false)
     const [showDiamond, setShowDiamond] = useState(false)
     const likeRef = useRef(null)
@@ -35,7 +35,7 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
         try {
             const request = {
                 ReaderPublicKeyBase58Check: user.profile.PublicKeyBase58Check,
-                LikedPostHashHex: video.PostHashHex,
+                LikedPostHashHex: isComment ? video?.PostHashHex: video.posthash,
                 MinFeeRateNanosPerKB: 1000,
                 IsUnlike: isUnlike,
             };

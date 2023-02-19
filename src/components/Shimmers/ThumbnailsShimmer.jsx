@@ -1,8 +1,7 @@
-import { THUMBNAIL_GENERATE_COUNT } from '@components/Upload/VideoThumbnails'
 import { useMemo } from 'react'
 
-const ThumbnailsShimmer = () => {
-  const thumbnails = useMemo(() => Array(THUMBNAIL_GENERATE_COUNT).fill(1), [])
+const ThumbnailsShimmer = ({ total = 3 }) => {
+  const thumbnails = useMemo(() => Array(total).fill(1), [])
 
   return (
     <>

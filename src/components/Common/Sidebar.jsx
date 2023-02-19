@@ -3,11 +3,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiHome } from 'react-icons/fi'
 import {
-  MdOutlineSubscriptions,
   MdOutlineVideoLibrary,
   MdHistory,
+  MdShuffle,
 } from 'react-icons/md'
-import { HISTORY, FEED, HOME, LIBRARY, PRIVACY, ABOUT } from '@utils/paths'
+import { HISTORY, HOME, LIBRARY, PRIVACY, ABOUT, EXPLORE } from '@utils/paths'
 import { CREATOR_VIDEO_CATEGORIES } from '@data/categories'
 import { FaDiscord, FaTwitter } from "react-icons/fa";
 import { IoDiamondOutline } from "react-icons/io5";
@@ -15,7 +15,6 @@ import { APP } from '@utils/constants'
 import { useState } from 'react'
 import { BsChevronDown, BsChevronUp, BsInfoSquare, BsShieldExclamation } from 'react-icons/bs'
 import SimpleBar from 'simplebar-react';
-import AlertBox from '../UI/AlertBox'
 
 const Sidebar = ({isSidebarCollapsed}) => {
   const router = useRouter()
@@ -46,20 +45,6 @@ const Sidebar = ({isSidebarCollapsed}) => {
                 </div>
               </Link>
               <Link
-                href={FEED}
-                className={clsx(
-                  'rounded-lg px-3 py-2 group hover-primary',
-                  {
-                    'active-primary font-bold ': isActivePath(FEED),
-                  },
-                )}
-              >
-                <div className={`flex items-center`}>
-                  <MdOutlineSubscriptions size={20} />
-                  <p className={`flex ml-6`}>Subscriptions</p>
-                </div>
-              </Link>
-              <Link
                 href={LIBRARY}
                 className={clsx(
                   'rounded-lg px-3 py-2 group hover-primary',
@@ -87,11 +72,22 @@ const Sidebar = ({isSidebarCollapsed}) => {
                   <p className={`flex ml-6`}>History</p>
                 </div>
               </Link>
+              <Link
+                href={EXPLORE}
+                className={clsx(
+                  'rounded-lg px-3 py-2 group hover-primary',
+                  {
+                    'active-primary font-bold ': isActivePath(EXPLORE),
+                  },
+                )}
+              >
+                <div className={`flex items-center`}>
+                  <MdShuffle size={20} />
+                  <p className={`flex ml-6`}>Explore</p>
+                </div>
+              </Link>
             </div>
             <div className="h-[1px] mt-4 mb-6 relative theme-border-bg" />
-            {/* <AlertBox wrapperClass='flex mb-6 items-center w-full' showButton={false}>
-              <div className='w-full'>Videso is still in the beta, You may get error, Please support us.</div>
-            </AlertBox> */}
             <div className="flex flex-col w-full mb-3 px-3">
               <div className='text-base font-medium'>Explore</div>
             </div>
@@ -117,7 +113,6 @@ const Sidebar = ({isSidebarCollapsed}) => {
                   )
                 }
               })}
-              
               {
                 !showMore ?
                   <div key={`showMore`} onClick={() => setShowMore(!showMore)} className="cursor-pointer rounded-lg px-3 py-2 group hover-primary">

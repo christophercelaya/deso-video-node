@@ -1,4 +1,4 @@
-import { BASE_NODE_URI, BASE_URI } from "@utils/constants";
+import { BASE_NODE_URI, BASE_URI, SERVER_URL } from "@utils/constants";
 import axios from "axios";
 
 
@@ -32,3 +32,9 @@ export const submitPost = async (request) => {
     }
 }
 
+
+export const updateView = async (req) => {
+    const response = await axios.post(`${SERVER_URL}/views`, req);
+
+    console.log('view', response.data);
+}

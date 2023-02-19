@@ -29,7 +29,7 @@ const Comments = ({ video }) => {
         try {
             const request = {
                 ReaderPublicKeyBase58Check: userPublicKey,
-                PostHashHex: video.PostHashHex,
+                PostHashHex: video.Post.PostHashHex,
                 FetchParents: true,
                 CommentOffset: 0,
                 CommentLimit: 20,
@@ -53,7 +53,7 @@ const Comments = ({ video }) => {
         }
     }
 
-    const refetchComments = async () => {
+    const refetchComments = () => {
         fetchData();
     }
 
@@ -79,8 +79,7 @@ const Comments = ({ video }) => {
                 <>
                     <div className=" space-y-4">
                         {post.Comments?.map((comment) => (
-                            <Comment key={`${comment?.PostHashHex}`} comment={comment}
-                        />
+                            <Comment key={`${comment?.PostHashHex}`} comment={comment}/>
                         ))}
                     </div>
                 </>

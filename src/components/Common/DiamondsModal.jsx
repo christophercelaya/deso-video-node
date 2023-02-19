@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import usePersistStore from '@store/persist'
 import { APP, DESO_CONFIG } from '@utils/constants'
 import { abbreviateNumber, formatUSD, nanosToUSDNumber } from '@utils/functions'
@@ -64,7 +65,7 @@ const DiamondModal = ({ diamonds, setDiamonds, diamondBestowed, setDiamondBestow
             const request = {
                 ReceiverPublicKeyBase58Check: video.ProfileEntryResponse.PublicKeyBase58Check,
                 SenderPublicKeyBase58Check: user.profile.PublicKeyBase58Check,
-                DiamondPostHashHex: video.PostHashHex,
+                DiamondPostHashHex: video?.Post?.PostHashHex,
                 MinFeeRateNanosPerKB: 1000,
                 DiamondLevel: value,
                 InTutorial: false,
@@ -80,7 +81,11 @@ const DiamondModal = ({ diamonds, setDiamonds, diamondBestowed, setDiamondBestow
                 toast.error(`Oops! This Amount Diamonds Already Sent`);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
+            toast.error(error.message)
+        } finally {
+            setLoading(false);
+            setShowTip(false);
         }
     }
 
@@ -90,7 +95,11 @@ const DiamondModal = ({ diamonds, setDiamonds, diamondBestowed, setDiamondBestow
             isLoggedIn ?
                 <Modal
                     title="Send Diamonds"
-                    onClose={() => setShowTip(false)}
+                    onClose={() => {
+                        setShowTip(false)
+                        setLoading(false)
+                        setShowTip(false)
+                   }}
                     show={show}
                     ref={rootRef}
                     panelClassName="w-full max-w-lg"
@@ -103,8 +112,9 @@ const DiamondModal = ({ diamonds, setDiamonds, diamondBestowed, setDiamondBestow
                             <img src={getProfilePicture(user.profile)} alt={user.profile.Username} className='w-10 h-10 rounded-full' />
                             <div className="truncate">
                                 <div className="flex items-center space-x-1.5">
-                                    <span className='text-xs font-medium text-light'>{getProfileName(user.profile)}</span>
-                                    {/* {user.profile.IsVerified ? <IsVerified size="xs" /> : null} */}
+                                    <span className='text-xs font-medium text-light'>
+                                        {getProfileName(user.profile)}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -116,8 +126,9 @@ const DiamondModal = ({ diamonds, setDiamonds, diamondBestowed, setDiamondBestow
                             <img src={getProfilePicture(video.ProfileEntryResponse)} alt={video.ProfileEntryResponse} className='w-10 h-10 rounded-full' />
                             <div className="truncate">
                                 <div className="flex items-center space-x-1.5">
-                                    <span className='text-xs font-medium text-light'>{getProfileName(video.ProfileEntryResponse)}</span>
-                                    {/* {video.ProfileEntryResponse.IsVerified ? <IsVerified size="xs" /> : null} */}
+                                    <span className='text-xs font-medium text-light'>
+                                        {getProfileName(video.ProfileEntryResponse)}
+                                    </span>
                                 </div>
                             </div>
                         </div>

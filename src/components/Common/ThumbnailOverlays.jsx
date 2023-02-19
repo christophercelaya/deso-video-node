@@ -1,17 +1,17 @@
 import { getTimeFromSeconds } from "@utils/functions"
 
-const ThumbnailOverlays = ({ video, data }) => {
+const ThumbnailOverlays = ({ video, duration }) => {
   return (
     <>
         <div>
-          {/* {data && !data.ReadyToStream ? 
-            <span className="py-0.5 absolute bottom-3 left-2 text-xs px-1 text-white bg-black rounded">
-              Processing Video
-            </span>
-          : null}   */}
-          {data && data.Duration ? (<span className="py-0.5 absolute bottom-3 right-2 text-xs px-1 text-white bg-black rounded">
-            {getTimeFromSeconds(data.Duration)}
+        {video?.is_live ?
+          <span className="py-0.5 absolute bottom-3 right-2 text-sm px-1 text-white bg-red-600 rounded">
+            Live
           </span>
+          : duration ? (
+            <span className="py-0.5 absolute bottom-3 right-2 text-xs px-1 text-white bg-black rounded">
+              {getTimeFromSeconds(duration)}
+            </span>
           ) : null}
         </div>
     </>

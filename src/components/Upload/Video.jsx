@@ -3,17 +3,10 @@ import useAppStore from '@store/app'
 import toast from 'react-hot-toast'
 import VideoThumbnails from './VideoThumbnails'
 import formatBytes from '@utils/functions'
-import { CardShimmer } from '../Shimmers/VideoCardShimmer'
-import dynamic from 'next/dynamic'
 import ProgressBar from '../UI/ProgressBar'
 import { getIsNSFW } from '@utils/functions/getIsNSFW'
 import * as tf from '@tensorflow/tfjs'
 import * as nsfwjs from 'nsfwjs'
-
-const ExVideoPlayer = dynamic(() => import('../Player/ExVideoPlayer'), {
-  loading: () => <CardShimmer />,
-  ssr: false
-})
 
 function UploadVideo() {
     const uploadedVideo = useAppStore((state) => state.uploadedVideo)
@@ -25,7 +18,7 @@ function UploadVideo() {
         if (currentVideo && !uploadedVideo.isNSFW) {
             try {
                 const model = await nsfwjs.load()
-                const predictions = await model?.classify(currentVideo, 3)
+                const predictions = await model?.classify(currentVideo, 5)
                 setUploadedVideo({
                     buttonText: 'Submit Video',
                     loading: false,
@@ -64,13 +57,6 @@ function UploadVideo() {
         <>
             <div className="flex flex-col w-full">
                 <div className="overflow-hidden relative rounded-xl w-full">
-                    {/* <ExVideoPlayer
-                        playerRef={videoRef}
-                        poster={uploadedVideo.thumbnail}
-                        source={uploadedVideo.preview}
-                        type={uploadedVideo.videoType || 'video/mp4'}
-                    /> */}
-                    
                     <div className="overflow-hidden relative rounded-xl w-full">
                         <video
                             ref={videoRef}

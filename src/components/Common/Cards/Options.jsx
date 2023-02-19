@@ -7,11 +7,10 @@ import { FiFlag } from 'react-icons/fi'
 import { RiShareForwardLine } from 'react-icons/ri'
 import WatchLater from '@components/Common/WatchLater'
 import { useEffect, useState } from 'react'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { addWatchLater, getWatchLater, removeWatchLater } from '@app/data/watchlater'
 
 const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = true}) => {
   const { isLoggedIn, user } = usePersistStore();
-  const supabase = useSupabaseClient();
   const reporterID = isLoggedIn ? user.profile.PublicKeyBase58Check : APP.PublicKeyBase58Check;
   const isVideoOwner = isLoggedIn ? user.profile.PublicKeyBase58Check === video?.ProfileEntryResponse?.PublicKeyBase58Check : false
   const [alreadyAddedToWatchLater, setAlreadyAddedToWatchLater] = useState(false)
@@ -24,37 +23,25 @@ const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = t
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [video])
 
-  const isAlreadyAddedToWatchLater = () => {
-    supabase.from('watchlater').select('*').eq('user', reporterID).eq('posthash', video.PostHashHex).then((res) => {
-      if (res && res.data.length > 0) {
-        setAlreadyAddedToWatchLater(true)
-      } else {
-        setAlreadyAddedToWatchLater(false)
-      }
-      if (res.error) {
-        console.log(video.PostHashHex, 'watched', res.error);
-      }
-    })
+  const isAlreadyAddedToWatchLater = async() => {
+    const watchLater = await getWatchLater(reader, video?.id)
+    if (watchLater) {
+      setAlreadyAddedToWatchLater(true)
+    }
   }
 
-  const addToWatchLater = () => {
-    supabase.from('watchlater').insert([{ user: reporterID, posthash: video.PostHashHex }]).then((res) => {
-      if (res.error) {
-          console.log(video.PostHashHex, 'watched', res.error);
-      } else {
-          setAlreadyAddedToWatchLater(true)
-      }
-    })
+  const addToWatchLater = async() => {
+    const { data } = await addWatchLater(reader, video?.id)
+    if (data?.data.length > 0) {
+      setAlreadyAddedToWatchLater(true)
+    }
   }
 
-  const removeFromWatchLater = () => {
-    supabase.from('watchlater').delete().eq('user', reporterID).eq('posthash', video.PostHashHex).then((res) => {
-      if (res.error) {
-          console.log(video.PostHashHex, 'watched', res.error);
-      } else {
-          setAlreadyAddedToWatchLater(false)
-      }
-    })
+  const removeFromWatchLater = async() => {
+    const response = await removeWatchLater(reader, video?.id)
+    if (response) {
+      setAlreadyAddedToWatchLater(false)
+    }
   }
 
   const onClickWatchLater = () => {

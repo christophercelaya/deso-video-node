@@ -1,82 +1,40 @@
-import usePersistStore from "@app/store/persist";
-import { BASE_URI } from "@app/utils/constants";
-import { supabase } from "@app/utils/functions/getSupabaseClient";
+import { BASE_URI, SERVER_URL } from "@app/utils/constants";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { fetchAllPosts } from "./api";
-import { getVideoExtraData } from "@app/utils/functions/getVideoExtraData";
+import { getPost, getPostAssociations, getUserProfile } from "./videos";
 
-// export const GetProfileFeed = async ({ queryKey }) => {
-//     const [_key, { username, reader, lastPost, limit, output }] = queryKey;
-//     const endpoint = 'get-posts-for-public-key';
-//     const lastid = (lastPost !== 0 && lastPost !== undefined) ? `${lastPost}` : ``;
-//     const nLimit = (limit && limit !== -1) ? limit : 2500
-//     const response = await axios.post(`${BASE_URI}/${endpoint}`, {
-//         Username: username,
-//         ReaderPublicKeyBase58Check: reader,
-//         LastPostHashHex: lastid,
-//         NumToFetch: nLimit,
-//         MediaRequired: true,
-//     });
-//     if (response === null) {
-//         return null
-//     } else {
-//         const posts = response.data.Posts;
-//         const filtered = posts.filter(post => {
-//             if (post.VideoURLs !== null && post.VideoURLs.length > 0 && post.VideoURLs[0] !== '') {
-//                 return post
-//             }
-//         });
-
-//         const filteredPosts = filtered.splice(0, output)
-//     console.log(filtered)
-
-//         return {posts:filteredPosts, LastPostHashHex: response.data.LastPostHashHex}
-//     }
-// }
-
-export const GetProfileFeed = async (publicKey, limit, reader, lastPost, output = 32) => {
-    // const { data: posts, error } = await supabase.from('videos').select('*').limit(output).eq('user', publicKey).order('created_at', { ascending: false });
-    const endpoint = 'get-posts-for-public-key';
-    const nLimit = (limit && limit !== -1) ? limit : 2500
-    const response = await axios.post(`${BASE_URI}/${endpoint}`, {
-        PublicKeyBase58Check: publicKey,
-        ReaderPublicKeyBase58Check: reader,
-        LastPostHashHex: lastPost,
-        NumToFetch: nLimit,
-        MediaRequired: true,
-    });
-    if (response === null) {
-        return null
-    } else {
-        const posts = response.data.Posts;
-
-        if (posts !== null) {
-            const filtered = posts.filter(post => {
-                const extraData = getVideoExtraData(post);
-                if (post.VideoURLs !== null && post.VideoURLs.length > 0 && post.VideoURLs[0] !== '' || extraData !== null) {
-                console.log('post', post.PostHashHex, extraData)
-                    return post
-                }
-            });
-                console.log(filtered)
-
-            const filteredPosts = filtered.splice(0, output)
-            
-            return filtered
+export const GetProfileFeed = async (profileID, limit = 32, reader, page) => {
+   const response = await axios.post(`${SERVER_URL}/user-videos`, { limit: limit, user_id: profileID, page: page })
+    const posts = response.data.data;
+    if (posts && posts.length > 0) {
+        const posts = response.data.data;
+        for( let i = 0; i < posts.length; i++) {
+            const userProfile = await getUserProfile(posts[i].user_id)
+            const chainPost = await getPost(posts[i].posthash, reader)
+            const associationsCount = await getPostAssociations(posts[i].posthash)
+            posts[i].ProfileEntryResponse = userProfile
+            posts[i].Post = chainPost
+            posts[i].AssociationsCount = associationsCount
         }
+        return posts
+    } else {
         return []
     }
-    // if (posts && posts.length > 0) {
-    //     const postsList = posts.map((post) => {
-    //         return post.posthash
-    //     })
-    //     const fullPosts = await fetchAllPosts(reader, postsList);
-    //     return fullPosts
-    // } else {
-    //     console.log(error)
-    //     return []
-    // }
+}
+
+export const FetchInfiniteProfileFeed = (profileID, limit, reader, pageParam) => {
+    return useInfiniteQuery(['infinite-profile-feed'], ({ pageParam = 0 }) => GetProfileFeed(profileID, limit, reader, pageParam),
+        {
+            getNextPageParam: (lastPage, pages) => {
+                console.log(lastPage.nextCursor)
+                if(lastPage === null) {
+                    return 0;
+                } else {
+                    return lastPage.nextCursor;
+                }
+            }
+        }
+    );
 }
 
 export const GetSingleProfile = async ({ queryKey }) => {

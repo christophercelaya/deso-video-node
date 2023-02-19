@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import usePersistStore from '@store/persist'
 import { formatNumber } from '@utils/functions'
 import { getProfilePicture } from '@utils/functions/getProfilePicture'

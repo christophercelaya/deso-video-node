@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import usePersistStore from '@store/persist'
 import { DESO_CONFIG } from '@utils/constants'
 import clsx from 'clsx'
@@ -5,7 +6,7 @@ import Deso from 'deso-protocol'
 import React, { useEffect, useState } from 'react'
 import { Button } from './Button'
 
-export const NoDataFound = ({imageSize = 'md:w-20 w-10', image = `/videso.png`, text = 'No data found', heading = 'No data found', withImage = false, isCenter = false, isHeading = false, button, isLoginButton = false, isButton = false }) => {
+export const NoDataFound = ({imageSize = 'md:w-20 w-10', image = `/videso.svg`, text = 'No data found', heading = 'No data found', withImage = false, isCenter = false, isHeading = false, button, isLoginButton = false, isButton = false }) => {
   
   const { setLoggedIn, isLoggedIn, user, setUser } = usePersistStore()
   const [loading, setLoading] = useState(false)
