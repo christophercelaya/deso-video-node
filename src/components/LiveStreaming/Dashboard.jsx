@@ -1,22 +1,29 @@
 import useAppStore from '@store/app'
 import { APP } from '@utils/constants'
 import { NextSeo } from 'next-seo'
-import { Fragment } from 'react'
-import { BiCopy, BiX } from 'react-icons/bi'
+import { BiCopy } from 'react-icons/bi'
 import Video from './Video'
-import { BsCheck } from 'react-icons/bs'
-import { Combobox, Transition } from '@headlessui/react'
-import { HiChevronUpDown } from "react-icons/hi2";
-import Category from '../Upload/Category'
 import { Button } from '../UI/Button'
 import { useRouter } from 'next/router'
-import { CREATOR_VIDEO_CATEGORIES } from '@app/data/categories'
+import useCopyToClipboard from '@utils/hooks/useCopyToClipboard'
+import { toast } from 'react-hot-toast'
 
 
 function LiveDashboard({ onUpload, onCancel }) {
     const router = useRouter()
     const setLiveStream = useAppStore((state) => state.setLiveStream)
     const liveStream = useAppStore((state) => state.liveStream)
+    const [copy] = useCopyToClipboard()
+
+    const copyStreamURL = async () => {
+        await copy(`rtmp://rtmp.livepeer.com/live`)
+        toast.success('Stream URL copied!')
+    }
+
+    const copyStreamKEY = async () => {
+        await copy(liveStream?.stream.streamKey)
+        toast.success('Stream KEY copied!')
+    }
 
     return (
         <>
@@ -48,26 +55,29 @@ function LiveDashboard({ onUpload, onCancel }) {
                                 }
                                 </span>
                             </div>
-                            <div className='mb-4'>
+                            <div className='mb-4 relative flex flex-col space-y-2'>
                                 <label className='font-medium text-sm'>Stream URL</label>
                                 <input
                                     readOnly
                                     className='w-full bg-primary border theme-border rounded-md dark:text-white focus-visible:ring-0 text-black border-none py-2.5 pl-3 pr-10 text-sm leading-5 focus:ring-0'
                                     type="text"
                                     placeholder="Stream URL"
+                                    onClick={copyStreamURL}
                                     value='rtmp://rtmp.livepeer.com/live'
                                 />
-                                <BiCopy className='absolute right-3 top-3 text-gray-500' />
+                                <BiCopy size={24} onClick={copyStreamKEY} className='cursor-pointer absolute right-3 top-7 text-gray-500' />
                             </div>
-                            <div className='mb-4 flex flex-col space-y-2'>
+                            <div className='mb-4 flex flex-col space-y-2 relative'>
                                 <label className='font-medium text-sm'>Stream Key</label>
                                 <input
                                     readOnly
                                     className='w-full bg-primary border theme-border rounded-md dark:text-white focus-visible:ring-0 text-black border-none py-2.5 pl-3 pr-10 text-sm leading-5 focus:ring-0'
                                     type="text"
                                     placeholder="Stream Key"
+                                    onClick={copyStreamKEY}
                                     value={liveStream?.stream.streamKey}
                                 />
+                                <BiCopy size={24} onClick={copyStreamKEY} className='cursor-pointer absolute right-3 top-7 text-gray-500' />
                             </div>
                         </div>
                     </div>

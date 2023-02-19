@@ -40,7 +40,7 @@ function UploadForm({onUpload, onCancel}) {
 
     const handleTags = (e) => {
         if (e.target.value !== "" && e.key === "Enter") {
-            let tag = e.target.value.replace(/\s/g, "")
+            let tag = e.target.value
             setCurrentTag('');
             setTags([...tags, tag]); 
             setUploadedVideo({tags: [...tags, tag]})
