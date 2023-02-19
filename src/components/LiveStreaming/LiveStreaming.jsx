@@ -29,7 +29,7 @@ function LiveStreaming() {
     }, [])
 
 
-    const { mutate: createStream, data: stream, status, progress, error } = useCreateStream({ name: liveStream.title, record: true });
+    const { mutate: createStream, data: stream, status, error } = useCreateStream({ name: liveStream.title, record: true });
 
     useEffect(() => {
         if (newPostHash !== null) {
@@ -61,9 +61,6 @@ function LiveStreaming() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status, stream])
-
-    console.log(liveStream)
-
 
     useEffect(() => {
         if (liveStream.readyToPost) {
@@ -142,11 +139,11 @@ function LiveStreaming() {
                 toast.success('Congratulations! Post Created.');
                 setResetLiveStream()
                 setTimeout(() => {
-                    router.push(`/@${user.profile.Username}`)
+                    router.push(`/watch/${liveStream.data?.data?.id}`)
                 }, 500)
             }
         } catch (error) {
-            console.log('video upload', error.message); 
+            console.log('live stream', error.message); 
         }
     }
 

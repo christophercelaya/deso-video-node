@@ -13,6 +13,7 @@ import { DESO_CONFIG } from '@utils/constants'
 import Tooltip from '../UI/Tooltip'
 import { isBrowser } from 'react-device-detect'
 import { getProfileName } from '@utils/functions/getProfileName'
+import { useAssetMetrics, useUpdateStream } from '@livepeer/react'
 
 function ChannelInfo({ views, video, channel }) {
     const [followers, setFollowers] = useState(0)
@@ -23,6 +24,14 @@ function ChannelInfo({ views, video, channel }) {
     const user = usePersistStore((state) => state.user)
     const isLoggedIn = usePersistStore((state) => state.isLoggedIn)
     const reader = isLoggedIn ? user.profile.PublicKeyBase58Check : '';
+
+    // const { mutate: updateStream, data: stream, status } = useUpdateStream({ streamId: video?.asset_id, suspend: true });
+    // const { data: metrics, error } = useAssetMetrics({ assetId: video?.asset_id });
+
+    // console.log('status', status)
+    // console.log('stream', stream)
+    // console.log('metrics', metrics)
+    // console.log('error', error)
 
     useEffect(() => {
         const deso = new Deso(DESO_CONFIG);
@@ -110,7 +119,7 @@ function ChannelInfo({ views, video, channel }) {
                     <div className='flex flex-col'>
                         <Link
                             href={`/@${channel.Username}`}
-                            className="flex items-center w-fit space-x-1.5 font-medium"
+                            className="flex items-center w-fit space-x-0.5 font-medium"
                         >
                             {isBrowser ?
                                 <Tooltip placement='top' contentClass='text-[12px]' title={getProfileName(channel)}>

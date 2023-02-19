@@ -84,7 +84,7 @@ const NewComment = ({ video, refetch }) => {
                 {showButtons ?
                     <div className='flex justify-end space-x-3'>
                         <Button variant='light' onClick={cancel} disabled={loading}>Cancel</Button>
-                        <Button onClick={submitComment} disabled={loading}>Comment</Button>
+                        <Button onClick={submitComment} loading={loading} disabled={loading}>Comment</Button>
                     </div>
                 : null}    
             </div>

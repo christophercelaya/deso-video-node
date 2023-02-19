@@ -8,6 +8,10 @@ import { RiShareForwardLine } from 'react-icons/ri'
 import WatchLater from '@components/Common/WatchLater'
 import { useEffect, useState } from 'react'
 import { addWatchLater, getWatchLater, removeWatchLater } from '@app/data/watchlater'
+import { BiTrash } from 'react-icons/bi'
+import { toast } from 'react-hot-toast'
+import Deso from 'deso-protocol'
+import { deleteVideoFromDB } from '@app/data/video'
 
 const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = true}) => {
   const { isLoggedIn, user } = usePersistStore();
@@ -50,6 +54,36 @@ const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = t
     : addToWatchLater()
   }
 
+  const deletVideo = async () => {
+    const deso = new Deso()
+    try {
+      const payload = {
+        PostHashHexToModify: video?.posthash,
+        UpdaterPublicKeyBase58Check: user.profile.PublicKeyBase58Check,
+        BodyObj: {
+          Body: video?.Post?.Body,
+          ImageURLs: video?.Post?.ImageURLs || [],
+          VideoURLs: video?.Post?.VideoURLs || [],
+        },
+        MinFeeRateNanosPerKB: 1000,
+        InTutorial: false,
+        PostExtraData: video?.Post?.PostExtraData,
+        isHidden: true,
+      }
+      const result = await deso.posts.submitPost(payload);
+      if (result && result.submittedTransactionResponse.PostEntryResponse.PostHashHex) {
+        const response = await deleteVideoFromDB(video?.id, video?.user_id)
+        if (response?.data.status === 204) {
+          window.location.reload();
+          toast.success('Video deleted successfully');
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(`Error: ${error.message}`);
+    }
+  }
+
   return (
     <>
       <DropMenu
@@ -86,6 +120,16 @@ const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = t
                 <FiFlag size={18} className="ml-0.5" />
                 <span className="whitespace-nowrap">Report</span>
             </a>
+            {isVideoOwner ?
+              <button
+                type="button"
+                onClick={deletVideo}
+                className="text-red-500 inline-flex items-center px-3 py-2 space-x-3 hover-primary"
+              >
+                <BiTrash size={22} />
+                <span className="whitespace-nowrap">Delete</span>
+              </button>
+            : null}
           </div>
         </div>
       </DropMenu>

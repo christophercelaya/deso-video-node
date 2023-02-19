@@ -10,8 +10,8 @@ export const livepeerClient = () => {
 export const playerTheme = {
     colors: {
         accent: '#fff',
-        progressLeft: '#ef466f',
-        loading: '#ef466f'
+        progressLeft: '#f91f59',
+        loading: '#f91f59'
     },
     fonts: {
         display: 'Roboto'

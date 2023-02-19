@@ -51,13 +51,13 @@ function ChannelVideos({channel}) {
                         {videos.pages.map(page => 
                         page.map(video => {
                             return (
-                            <VideoCard userProfile={video.ProfileEntryResponse} key={`${video.PostHashHex}`} video={video} />
+                            <VideoCard userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video} />
                             )
                         })
                         )}
                     </div>
                     
-                    <div className='loadMore flex items-center justify-center mt-10'>
+                    {/* <div className='loadMore flex items-center justify-center mt-10'>
                         <div className='loadMoreButton'>
                             <div ref={ref} onClick={fetchNextPage} disabled={!hasNextPage || isFetchingNextPage} className='btn'>
                                 {isFetchingNextPage
@@ -67,7 +67,7 @@ function ChannelVideos({channel}) {
                                     : null}
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </>
             )
             : (

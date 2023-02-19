@@ -50,10 +50,11 @@ export const LIVE_FORM_DEFAULTS = {
   durationInSeconds: 0,
   isSensitiveContent: false,
   readyToPost: false,
+  dashButton: 'Go Live',
   readyToLive: false,
   loading: false,
   uploadingThumbnail: false,
-  buttonText: 'Go Live',
+  buttonText: 'Create Stream',
   videoCategory: CREATOR_VIDEO_CATEGORIES[0],
   isNSFW: false,
   isNSFWThumbnail: false

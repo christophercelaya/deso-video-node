@@ -19,7 +19,6 @@ dayjs.extend(relativeTime)
 const SuggestedVideoCard = ({ video, channel }) => {
     const [showShare, setShowShare] = useState(false)
     const [showReport, setShowReport] = useState(false)
-    console.log(video);
     return (
         <>
             {!video?.Post?.IsHidden ?  (

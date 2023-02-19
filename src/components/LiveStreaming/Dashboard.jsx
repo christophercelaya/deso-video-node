@@ -77,10 +77,10 @@ function LiveDashboard({ onUpload, onCancel }) {
                 <div className="flex relative z-0 items-center space-x-4 justify-start mt-5">
                     <Button
                         onClick={() => {
-                            setLiveStream({readyToPost: true, loading: true})
+                            setLiveStream({readyToPost: true, loading: true, dashButton: 'Creating Post'})
                         }}
                     >
-                        Go Live
+                        {liveStream.dashButton}
                     </Button>
                     <Button
                         variant="light"
