@@ -22,17 +22,6 @@ const Video = ({ video }) => {
         video={video}
         playerRef={playerRef}
       />
-      {/* <Player
-        poster={video?.thumbnail}
-        playbackId={video?.playbackId}
-        aspectRatio='16to9'
-        objectFit="contain"
-        showPipButton={true}
-        autoPlay={false}
-        loop={true}
-        showTitle={false}
-        showUploadingIndicator={false}
-      /> */}
       <div className="md:px-0 px-3 flex flex-col">
         <div>
             <h1 className="text-lg md:text-2xl font-medium line-clamp-2">

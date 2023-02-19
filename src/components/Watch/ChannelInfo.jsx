@@ -13,7 +13,6 @@ import { DESO_CONFIG } from '@utils/constants'
 import Tooltip from '../UI/Tooltip'
 import { isBrowser } from 'react-device-detect'
 import { getProfileName } from '@utils/functions/getProfileName'
-import { useAssetMetrics, useUpdateStream } from '@livepeer/react'
 
 function ChannelInfo({ views, video, channel }) {
     const [followers, setFollowers] = useState(0)
@@ -24,14 +23,6 @@ function ChannelInfo({ views, video, channel }) {
     const user = usePersistStore((state) => state.user)
     const isLoggedIn = usePersistStore((state) => state.isLoggedIn)
     const reader = isLoggedIn ? user.profile.PublicKeyBase58Check : '';
-
-    // const { mutate: updateStream, data: stream, status } = useUpdateStream({ streamId: video?.asset_id, suspend: true });
-    // const { data: metrics, error } = useAssetMetrics({ assetId: video?.asset_id });
-
-    // console.log('status', status)
-    // console.log('stream', stream)
-    // console.log('metrics', metrics)
-    // console.log('error', error)
 
     useEffect(() => {
         const deso = new Deso(DESO_CONFIG);

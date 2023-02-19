@@ -77,8 +77,17 @@ const SuggestedVideoCard = ({ video, channel }) => {
                                                     className="text-sm truncate text-light"
                                                 >
                                                     <div className="flex items-center space-x-1.5">
-                                                        {isBrowser ? <Tooltip placement='top' contentClass='text-[12px]' title={getProfileName(video?.ProfileEntryResponse)}><span>{getProfileName(video?.ProfileEntryResponse)}</span></Tooltip> : <span>{video?.ProfileEntryResponse.Username}</span>}
-                                                        {video?.ProfileEntryResponse.IsVerified ? <Tooltip placement='top' contentClass='text-[12px]' title='Verified'><span><IsVerified size="xs" /></span></Tooltip> : null}
+                                                        {isBrowser ?
+                                                            <Tooltip placement='top' contentClass='text-[12px]' title={getProfileName(video?.ProfileEntryResponse)}>
+                                                                <span>{getProfileName(video?.ProfileEntryResponse)}</span>
+                                                            </Tooltip> :
+                                                            <span>{video?.ProfileEntryResponse.Username}</span>
+                                                        }
+                                                        {video?.ProfileEntryResponse.IsVerified ?
+                                                            <Tooltip placement='top' contentClass='text-[12px]' title='Verified'>
+                                                                <span><IsVerified size="xs" /></span>
+                                                            </Tooltip> : null
+                                                        }
                                                     </div>
                                                 </Link>
                                             </div>

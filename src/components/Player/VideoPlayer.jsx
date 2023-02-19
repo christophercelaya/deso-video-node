@@ -4,12 +4,14 @@ import useAppStore from '@store/app'
 import { getCurrentDuration } from '@app/utils/functions/getCurrentDuration'
 import usePersistStore from '@app/store/persist'
 import { updateView } from '@app/data/video'
+import { APP } from '@app/utils/constants'
 
 const PlayerInstance = ({ video, playerRef }) => {
 
   return (
     <>
       <Player
+        title={video?.title}
         mediaElementRef={playerRef}
         poster={video?.thumbnail}
         playbackId={video?.playbackId}

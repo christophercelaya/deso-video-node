@@ -2,12 +2,12 @@ import { SuggestedVideosShimmer } from '@components/Shimmers/WatchVideoShimmer'
 import { GetSuggestedFeed } from '@data/suggested'
 import useAppStore from '@store/app'
 import usePersistStore from '@store/persist'
-import { getShuffleArray } from '@utils/functions/getShuffleArray'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import SuggestedVideoCard from '../VideosCard'
+import { APP } from '@app/utils/constants'
 
 function AllVideos({video, currentVideoId}) {
     const {query: { id }} = useRouter()
@@ -16,7 +16,7 @@ function AllVideos({video, currentVideoId}) {
     const recentlyWatched = usePersistStore((state) => state.recentlyWatched)
     const user = usePersistStore((state) => state.user)
     const isLoggedIn = usePersistStore((state) => state.isLoggedIn)
-    const reader = isLoggedIn ? user.PublicKeyBase58Check : '';
+    const reader = isLoggedIn ? user.PublicKeyBase58Check : APP.PublicKeyBase58Check;
     const { isSuccess, isLoading, isError, error, hasNextPage, isFetchingNextPage, fetchNextPage, data: videos } = useInfiniteQuery(['suggested-feed'], ({ pageParam = recentlyWatched }) => GetSuggestedFeed(reader, 15, pageParam, currentVideoId),
         {
             enabled: !!currentVideoId,

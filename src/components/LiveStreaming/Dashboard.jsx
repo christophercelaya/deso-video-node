@@ -2,7 +2,7 @@ import useAppStore from '@store/app'
 import { APP } from '@utils/constants'
 import { NextSeo } from 'next-seo'
 import { Fragment } from 'react'
-import { BiX } from 'react-icons/bi'
+import { BiCopy, BiX } from 'react-icons/bi'
 import Video from './Video'
 import { BsCheck } from 'react-icons/bs'
 import { Combobox, Transition } from '@headlessui/react'
@@ -57,6 +57,7 @@ function LiveDashboard({ onUpload, onCancel }) {
                                     placeholder="Stream URL"
                                     value='rtmp://rtmp.livepeer.com/live'
                                 />
+                                <BiCopy className='absolute right-3 top-3 text-gray-500' />
                             </div>
                             <div className='mb-4 flex flex-col space-y-2'>
                                 <label className='font-medium text-sm'>Stream Key</label>
