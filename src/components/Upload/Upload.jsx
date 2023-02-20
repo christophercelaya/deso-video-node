@@ -33,7 +33,7 @@ function Upload() {
         // we use a `const` assertion here to provide better Typescript types
         // for the returned data
         uploadedVideo.file
-        ? { sources: [{ name: uploadedVideo.file.name, file: uploadedVideo.file }], noWait: false, }
+        ? { sources: [{ name: uploadedVideo.file.name, file: uploadedVideo.file }], noWait: true, }
         : null,
     );
 

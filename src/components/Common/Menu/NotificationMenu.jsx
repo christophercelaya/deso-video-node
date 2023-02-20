@@ -3,10 +3,8 @@ import Notification from '@app/components/notifications/Notification'
 import DropMenu from '@components/UI/DropMenu'
 import usePersistStore from '@store/persist'
 import Deso from 'deso-protocol'
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { CgBell } from 'react-icons/cg'
-import SimpleBar from 'simplebar-react'
 
 const deso = new Deso();
 
@@ -69,7 +67,7 @@ function NotificationMenu() {
                     </button>
                 }
             >
-                <div className="py-2 my-1 mt-1.5 w-96 max-h-96 mr-0 divide-y focus-visible:outline-none focus:outline-none focus:ring-0 dropdown-shadow theme-divider overflow-hidden border theme-border rounded-xl bg-dropdown">
+                <div className="py-2 my-1 md:-mr-0 -mr-9 mt-1.5 w-80 md:w-96 max-h-96 divide-y focus-visible:outline-none focus:outline-none focus:ring-0 dropdown-shadow theme-divider overflow-hidden border theme-border rounded-xl bg-dropdown">
                     <div className="flex flex-col space-y-1 text-sm transition duration-150 ease-in-out rounded-lg">
                         <div className="inline-flex items-center justify-between p-2 pt-1 pb-3 space-x-2 rounded-lg">
                             <span className="text-base truncate leading-4">Notifications</span>

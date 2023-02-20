@@ -68,6 +68,20 @@ const AboutChannel = ({video }) => {
             </Link>
           </div>
         </div>
+        <div className="flex mt-4">
+          <div className="flex text-sm items-center space-x-2">
+            <span>Tags:</span>
+            {JSON.parse(video?.tags)?.map((tag) => (
+              <Link
+                key={tag}
+                href={`/hashtag/${tag.toLowerCase()}`}
+                className="text-primary font-medium"
+              >
+                #{tag.toLowerCase()}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,8 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import { BsFillHeartFill, BsReplyFill } from 'react-icons/bs';
-import { SlDiamond } from 'react-icons/sl';
-import { FaRegUserCircle } from 'react-icons/fa';
 import Notify from './Notify';
 import { parseNotification } from '@app/utils/functions/parseNotification';
 import { EXTERNAL_LINK } from '@app/utils/constants';
@@ -19,29 +16,11 @@ function Notification({ ProfilesByPublicKey, reader, PostsByHash, notification }
 
     return (
         <>
-            <div className='flex flex-col pt-2 px-4'>
+            <div className='flex flex-col pt-2 px-2 md:px-4'>
                 <div className='flex items-center space-x-1'>
-                    {/* { notify.type === 'REPLIED_TO_POST' ?
-                            <span className='text-sm extralight flex space-x-1 items-center'>
-                                <BsReplyFill className='text-blue-500' size={17} />
-                            </span>
-                            : notify.type === 'DIAMOND_SENT' ?
-                                <span className='text-sm extralight flex space-x-1 items-center'>
-                                    <SlDiamond className='text-blue-700' size={17} />
-                                </span>
-                                : notify.type === 'LIKED' ?
-                                    <span className='text-sm extralight flex space-x-1 items-center'>
-                                        <BsFillHeartFill className='text-red-500' size={17} />
-                                    </span>
-                                    : notify.type === 'MENTIONED' ?
-                                        <span className='text-sm extralight flex space-x-1 items-center'>
-                                            <FaRegUserCircle className='text-blue-500' size={17} />
-                                        </span>
-                                        : null
-                    } */}
                     <Link
                         href={`/@${notify.actor.Username}`}
-                        className='cursor-pointer relative truncate max-w-1/2  flex items-center space-x-2 '>
+                        className='cursor-pointer relative truncate max-w-1/2 flex items-center space-x-2 '>
                         <img
                             src={`${EXTERNAL_LINK}/api/v0/get-single-profile-picture/${
                             notify.actor.PublicKeyBase58Check

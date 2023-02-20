@@ -44,7 +44,6 @@ function NewVideoMenu() {
                     </div>
                 </div>
             </DropMenu>
-        
         </>
     )
 }
