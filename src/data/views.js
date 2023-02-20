@@ -9,14 +9,14 @@ const useVideoViews = (playbackId) => {
     const fetchVideoViews = async () => {
         setLoading(true)
         try {
-            const { data } = await axios.post(`${APP.API_URL}/api/video`, {
+            const { data } = await axios.post(`${APP.API_URL}/video`, {
                 playbackId: playbackId
             })
             if (data && data.success) {
                 setViews(data.views)
             }
         } catch (error) {
-            console.log('Video Views', error)
+            console.log('Video Views', error.message)
         } finally {
             setLoading(false)
         }
