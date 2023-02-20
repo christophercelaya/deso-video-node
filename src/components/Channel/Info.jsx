@@ -79,7 +79,7 @@ function ChannelInfo({ following, followers, channel }) {
                             <div className='flex flex-col mt-4 md:mt-0 mb-2 flex-none md:flex-1 items-start'>
                                 <div className='flex items-center'>
                                     <Tooltip placement='top' contentClass='text-[12px]' title={channel.Username}>
-                                        <h3 className='text-xl md:text-2xl mr-1 md:mr-2 tracking-wide leading-0 hover:opacity-100 opacity-80'>{getProfileName(channel)}</h3>
+                                        <h3 className='text-xl md:text-2xl mr-1 tracking-wide leading-0 hover:opacity-100 opacity-80'>{getProfileName(channel)}</h3>
                                     </Tooltip>    
                                     {channel.IsVerified ?
                                         <Tooltip placement='top' contentClass='text-[12px]' title='Verified'>
