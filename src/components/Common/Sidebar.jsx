@@ -193,12 +193,11 @@ const Sidebar = ({isSidebarCollapsed}) => {
               <span>Powered by</span>
               <Link
                 className="text-primary text-primary-hover text-sm font-medium"
-                href={`https://vercel.com/?utm_source=${APP.Name}&utm_campaign=oss`}
+                href='https://livepeer.org/'
                 rel="noreferrer noopener"
                 target="_blank"
               >
-                <span>▲</span>
-                <span>Vercel</span>
+                <span>LivePeer</span>
               </Link>
             </div>
             <div className='flex flex-col px-3 text-sm text-primary mt-4'>
