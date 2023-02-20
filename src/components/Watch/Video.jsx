@@ -6,11 +6,10 @@ import VideoActions from './VideoActions'
 import ChannelInfo from './ChannelInfo'
 import dynamic from 'next/dynamic'
 import { CardShimmer } from '../Shimmers/VideoCardShimmer'
-import { useEffect, useRef, useState } from 'react'
-import { useStreamSession } from '@livepeer/react'
-import { fetchStreamSession } from '@app/data/api'
+import { useRef, useState } from 'react'
+import { useAsset, useStreamSession } from '@livepeer/react'
 
-const VideoPlayer = dynamic(() => import('../Player/VideoPlayer'), {
+const VideoPlayer = dynamic(() => import('./VideoPlayer'), {
   loading: () => <CardShimmer rounded={false} />,
   ssr: false
 })
@@ -20,25 +19,15 @@ const Video = ({ video }) => {
   const playerRef = useRef()
   const [sessions, setSession] = useState()
   const { data: session } = useStreamSession(video?.asset_id)
-
-  // useEffect(() => {
-  //   getStreamSession(video?.asset_id);
-  // }, [video])
-
-  // console.log(video)
-
-  // const getStreamSession = async (asset_id) => {
-  //   const response = await fetchStreamSession(asset_id);
-  //   setSession(response);
-  // }
-
-  console.log(session)
+  const { data: asset } = useAsset(video?.asset_id);
 
   return (
     <>
       <VideoPlayer
         video={video}
         playerRef={playerRef}
+        isProcessing={asset ? asset.status.phase === 'processing' : false}
+        progress={asset ? asset.status.progress : 0}
       />
       <div className="md:px-0 px-3 flex flex-col">
         <div>

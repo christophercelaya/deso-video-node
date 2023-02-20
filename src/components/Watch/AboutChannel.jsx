@@ -60,7 +60,7 @@ const AboutChannel = ({video }) => {
             <span>Category:</span>
             <Link
               href={`/explore/${video?.category}`}
-              className="text-primary font-medium"
+              className="text-blue-500 hover:text-brand-500"
             >
               {
                 CREATOR_VIDEO_CATEGORIES.find((category) => category.tag === video?.category)?.name
@@ -75,7 +75,7 @@ const AboutChannel = ({video }) => {
               <Link
                 key={tag}
                 href={`/hashtag/${tag.toLowerCase()}`}
-                className="text-primary font-medium"
+                className="text-blue-500 hover:text-brand-500"
               >
                 #{tag.toLowerCase()}
               </Link>

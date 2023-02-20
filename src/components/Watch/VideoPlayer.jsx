@@ -30,6 +30,8 @@ const PlayerInstance = ({ video, playerRef }) => {
 const VideoPlayer = ({
   video,
   playerRef,
+  isProcessing,
+  progress
 }) => {
   const videoWatchTime = useAppStore((state) => state.videoWatchTime)
   const currentDuration = getCurrentDuration(video?.duration);
@@ -100,6 +102,22 @@ const VideoPlayer = ({
         playerRef={mediaElementRef}
         video={video}
       />
+      {isProcessing && (
+        <div className="absolute top-12 left-0 w-full h-full flex items-center justify-center z-10">
+          <div className="flex flex-col items-center justify-center">
+            <div className="text-white text-sm font-medium mb-2">
+              Processing {' '}
+              {progress * 100}%
+            </div>
+            <div className="w-40 h-1 bg-gray-500 rounded-full">
+              <div
+                className="h-full bg-red-600 rounded-full"
+                style={{ width: `${progress * 100}%` }}
+              />
+            </div> 
+          </div>
+        </div>
+      )}
     </div>
   )
 }

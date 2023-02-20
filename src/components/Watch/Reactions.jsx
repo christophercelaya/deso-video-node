@@ -103,7 +103,7 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
                                 'text-brand2-500 dark:text-brand2-400': liked
                             })}
                         >
-                            {likes > 0 ? formatNumber(likes) : 'Like'}
+                            {likes > 0 ? formatNumber(likes) : '0'}
                         </span>
                     </span>
                 </Button>
