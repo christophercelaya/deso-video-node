@@ -178,7 +178,7 @@ body{
 }
 
 .primary-button {
-  @apply bg-gradient-to-r from-brand-700 to-pink-600 hover:from-brand-600 hover:to-brand-600 dark:from-pink-500 dark:to-brand-500 dark:hover:from-brand-600 dark:hover:to-brand-600 text-white;
+  @apply bg-gradient-to-r from-brand-500 to-pink-600 hover:from-brand-500 hover:to-brand-600 dark:from-pink-500 dark:to-brand-500 dark:hover:from-brand-600 dark:hover:to-brand-600 text-white;
 }
 
 // Range Slider

@@ -33,11 +33,11 @@ function UploadVideo({isDashboard = false}) {
                                 showTitle={false}
                                 showUploadingIndicator={false}
                             />
-                        ) : (
+                        ) : liveStream?.thumbnail ? (
                                 <div className="flex flex-col items-center justify-center w-full h-full aspect-w-16 aspect-h-9">
                                     <img src={liveStream?.thumbnail} alt='' className="w-full h-full object-cover" />
                                 </div>
-                        )}
+                        ): null}
                     </div>
                 </div>
                 

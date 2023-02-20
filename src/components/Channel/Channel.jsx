@@ -15,7 +15,7 @@ import Deso from 'deso-protocol';
 import { APP, DESO_CONFIG } from '@utils/constants';
 import { BsThreeDots } from 'react-icons/bs';
 import { Button } from '../UI/Button';
-import MoreTabsModal from '../Common/MoreTabsModal';
+import MoreTabsModal from '../Common/Modals/MoreTabsModal';
 import { getProfileName } from '@utils/functions/getProfileName';
 import { NextSeo } from 'next-seo';
 

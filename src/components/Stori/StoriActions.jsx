@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import ShareModal from '../Common/ShareModal'
+import ShareModal from '../Common/Modals/ShareModal'
 import VideoOptions from '../Common/Cards/Options'
 
 const StoriActions = ({ video }) => {

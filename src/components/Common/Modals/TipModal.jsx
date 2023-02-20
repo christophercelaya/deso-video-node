@@ -1,8 +1,8 @@
 import usePersistStore from '@store/persist'
 import Modal from '@components/UI/Modal'
 import { useState } from 'react'
-import { Button } from '../UI/Button'
-import InputMentions from '../UI/InputMentions'
+import { Button } from '../../UI/Button'
+import InputMentions from '../../UI/InputMentions'
 
 const TipModal = ({ rootRef, show, setShowTip, video }) => {
     const { isLoggedIn } = usePersistStore()

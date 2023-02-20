@@ -12,6 +12,7 @@ import { BiTrash } from 'react-icons/bi'
 import { toast } from 'react-hot-toast'
 import Deso from 'deso-protocol'
 import { deleteVideoFromDB } from '@app/data/video'
+import DeleteModal from '../Modals/DeleteModal'
 
 const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = true}) => {
   const { isLoggedIn, user } = usePersistStore();
@@ -19,6 +20,7 @@ const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = t
   const isVideoOwner = isLoggedIn ? user.profile.PublicKeyBase58Check === video?.ProfileEntryResponse?.PublicKeyBase58Check : false
   const [alreadyAddedToWatchLater, setAlreadyAddedToWatchLater] = useState(false)
   const reader = isLoggedIn ? user.profile.PublicKeyBase58Check : APP.PublicKeyBase58Check;
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   useEffect(() => {
     if (video) {
@@ -54,38 +56,9 @@ const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = t
     : addToWatchLater()
   }
 
-  const deletVideo = async () => {
-    const deso = new Deso()
-    try {
-      const payload = {
-        PostHashHexToModify: video?.posthash,
-        UpdaterPublicKeyBase58Check: user.profile.PublicKeyBase58Check,
-        BodyObj: {
-          Body: video?.Post?.Body,
-          ImageURLs: video?.Post?.ImageURLs || [],
-          VideoURLs: video?.Post?.VideoURLs || [],
-        },
-        MinFeeRateNanosPerKB: 1000,
-        InTutorial: false,
-        PostExtraData: video?.Post?.PostExtraData,
-        isHidden: true,
-      }
-      const result = await deso.posts.submitPost(payload);
-      if (result && result.submittedTransactionResponse.PostEntryResponse.PostHashHex) {
-        const response = await deleteVideoFromDB(video?.id, video?.user_id)
-        if (response?.data.status === 204) {
-          window.location.reload();
-          toast.success('Video deleted successfully');
-        }
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error(`Error: ${error.message}`);
-    }
-  }
-
   return (
     <>
+      <DeleteModal video={video} show={showDeleteModal} setShowDeleteModal={setShowDeleteModal} />
       <DropMenu
         trigger={
           <div
@@ -123,7 +96,7 @@ const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = t
             {isVideoOwner ?
               <button
                 type="button"
-                onClick={deletVideo}
+                onClick={() => setShowDeleteModal(true)}
                 className="text-red-500 inline-flex items-center px-3 py-2 space-x-3 hover-primary"
               >
                 <BiTrash size={22} />

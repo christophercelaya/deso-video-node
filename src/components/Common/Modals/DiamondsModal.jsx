@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoDiamondOutline } from 'react-icons/io5'
 import { Slider } from 'rsuite'
-import { Button } from '../UI/Button'
+import { Button } from '../../UI/Button'
 
 const DiamondModal = ({ diamonds, setDiamonds, diamondBestowed, setDiamondBestowed, rootRef, show, setShowTip, video }) => {
     const { user, isLoggedIn } = usePersistStore()

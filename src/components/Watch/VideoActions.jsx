@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { FiFlag } from 'react-icons/fi'
 import { RiShareForwardLine } from 'react-icons/ri'
-import ShareModal from '../Common/ShareModal'
+import ShareModal from '../Common/Modals/ShareModal'
 import { Button } from '../UI/Button'
 import Reactions from './Reactions'
 import { BsThreeDots } from 'react-icons/bs'

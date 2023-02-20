@@ -12,7 +12,7 @@ const Header = () => {
   const isLoggedIn = usePersistStore((state) => state.isLoggedIn)
   return (
     <>
-      <div className='fixed items-center flex justify-start md:justify-between flex-row z-30 left-0 right-0 top-0 flex-shrink-0 bg-white dark:bg-gray-900 h-16 px-4'>
+      <div className='fixed items-center flex justify-start md:justify-between flex-row z-30 left-0 right-0 top-0 flex-shrink-0 bg-white dark:bg-[#0f0f0f] h-16 px-4'>
         <div className="md:w-56 flex md:flex-none flex-1 md:justify-center py-4">
           <Link
             href={HOME}

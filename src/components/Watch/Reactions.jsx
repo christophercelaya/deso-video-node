@@ -7,10 +7,10 @@ import Deso from 'deso-protocol'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
-import TipModal from '../Common/TipModal'
+import TipModal from '../Common/Modals/TipModal'
 import { BiDollar } from 'react-icons/bi'
 import { IoDiamondOutline } from 'react-icons/io5'
-import DiamondModal from '../Common/DiamondsModal'
+import DiamondModal from '../Common/Modals/DiamondsModal'
 import party from "party-js"
 
 const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondButton = true, isComment = false, showButton = true}) => {
@@ -78,7 +78,7 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
             <DiamondModal setDiamonds={setDiamonds} diamonds={diamonds} diamondBestowed={diamondBestowed} setDiamondBestowed={setDiamondBestowed} show={showDiamond} setShowTip={setShowDiamond} video={video} />
             <div className='flex space-x-2 md:space-x-4'>
                 <Button ref={likeRef} variant={showButton ? "light" : "none"} size={showButton ? 'md' : 'small'} className={`group ${showButton ? `h-10` : `!p-0`}`} onClick={() => { likeVideo(liked) }}>
-                    <span className={clsx('flex items-center dark:group-hover:text-brand2-400 group-hover:text-brand2-500 space-x-2 outline-none', {
+                    <span className={clsx('flex items-center dark:group-hover:text-brand2-500 group-hover:text-brand2-500 space-x-2 outline-none', {
                         'text-brand2-500 dark:text-brand2-400 font-semibold': liked
                     },
                         { 'space-x-1.5 md:space-x-3': showButton },
@@ -86,13 +86,13 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
                     )}>
                         {liked ? <FaThumbsUp size={iconSize}
                             className={clsx({
-                                'text-brand2-500 dark:text-brand2-400': liked,
+                                'text-brand2-500 dark:text-brand2-500': liked,
                                 'animate-bounce': liking
                             })}
                         /> :
                             <FaRegThumbsUp size={iconSize}
                                 className={clsx({
-                                    'text-brand2-500 dark:text-brand2-400': liked,
+                                    'text-brand2-500 dark:text-brand2-500': liked,
                                     'animate-bounce': liking
                                 })}
                             />
@@ -100,7 +100,7 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
 
                         <span
                             className={clsx({
-                                'text-brand2-500 dark:text-brand2-400': liked
+                                'text-brand2-500 dark:text-brand2-500': liked
                             })}
                         >
                             {likes > 0 ? formatNumber(likes) : '0'}
@@ -110,8 +110,8 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
                 
                 {showDiamondButton ?
                     <Button variant={showButton ? "light" : "none"} size={showButton ? 'md' : 'small'} className={`group ${showButton ? `h-10` : `!p-0`}`} onClick={showDiamondModal}>
-                        <span className={clsx('flex items-center group-hover:text-brand2-500 dark:group-hover:text-brand2-400 space-x-2 outline-none', {
-                            'text-brand2-500 dark:text-brand2-400 font-semibold': diamondBestowed > 0
+                        <span className={clsx('flex items-center group-hover:text-brand2-500 dark:group-hover:text-brand2-500 space-x-2 outline-none', {
+                            'text-brand2-500 dark:text-brand2-500 font-semibold': diamondBestowed > 0
                         },
                             { 'space-x-1.5 md:space-x-3': showButton },
                             { 'mt-1.5': !showButton }
@@ -124,7 +124,7 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
                 
                 {showTipButton ?
                     <Button variant={showButton ? "light" : "none"} size={showButton ? 'md' : 'small'} className={`group ${showButton ? `h-10` : `!p-0`}`} onClick={showTipModal}>
-                        <span className={clsx('flex items-center group-hover:text-brand2-500 dark:group-hover:text-brand2-400 space-x-2 outline-none',
+                        <span className={clsx('flex items-center group-hover:text-brand2-500 dark:group-hover:text-brand2-500 space-x-2 outline-none',
                             { 'space-x-1.5 md:space-x-3': showButton },
                             { 'mt-1.5': !showButton }
                         )}>

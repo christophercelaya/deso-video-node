@@ -10,7 +10,7 @@ import { UploadImage } from '@data/image'
 import usePersistStore from '@store/persist'
 
 const DEFAULT_THUMBNAIL_INDEX = 0
-export const THUMBNAIL_GENERATE_COUNT = 1
+export const THUMBNAIL_GENERATE_COUNT = 0
 
 const VideoThumbnails = ({ label, afterUpload }) => {
     const {user} = usePersistStore()
@@ -77,7 +77,7 @@ const VideoThumbnails = ({ label, afterUpload }) => {
                     <BiImageAdd size={21} className="flex-none mb-1" />
                 <span className="tracking-wide text-[13px]">Upload thumbnail</span>
             </label>
-            {!thumbnails.length && <ThumbnailsShimmer total='1' />}
+            {/* {!thumbnails.length && <ThumbnailsShimmer total='1' />} */}
                 {thumbnails.map((thumbnail, idx) => {
                 return (
                     <button

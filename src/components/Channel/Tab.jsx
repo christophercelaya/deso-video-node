@@ -16,7 +16,7 @@ import Deso from 'deso-protocol';
 import { DESO_CONFIG } from '@utils/constants';
 import { BsThreeDots } from 'react-icons/bs';
 import { Button } from '../UI/Button';
-import MoreTabsModal from '../Common/MoreTabsModal';
+import MoreTabsModal from '../Common/Modals/MoreTabsModal';
 
 const ChannelVideos = dynamic(() => import("./Tabs/Videos"), {
   suspense: true,
