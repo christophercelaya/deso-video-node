@@ -8,7 +8,7 @@ export const ALLOWED_VIDEO_TYPES = [
 
 export const APP = {
   Name: 'Videso',
-  URL: 'https://videso.xyz',
+  URL: 'https://testnet.videso.xyz',
   EMBED_URL: 'https://embed.videso.xyz',
   API_URL: 'https://api.videso.xyz',
   Description: 'Videso is a decentralized video-sharing social media platform built with DeSo.',
@@ -57,7 +57,7 @@ export const DEFAULT_SEO = {
   },
 };
 
-export const BASE_URI = process.env.NEXT_PUBLIC_NODE_API_URL || 'https://diamondapp.com/api/v0'; //'https://node.deso.org/api/v0';
+export const BASE_URI = process.env.NEXT_PUBLIC_NODE_API_URL || 'https://node.deso.org/api/v0'; //'https://diamondapp.com/api/v0';
 export const BASE_NODE_URI = 'https://node.deso.org/api/v0';
 export const BASE_IDENTITY_URI = process.env.NEXT_PUBLIC_NODE_IDENTITY_URL || 'https://identity.deso.org';
 export const EXTERNAL_LINK = process.env.NEXT_PUBLIC_EXTERNAL_URL || 'https://diamondapp.com';

@@ -45,7 +45,7 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
             )
             const thumbnails = []
             thumbnailArray.forEach((t) => {
-                thumbnails.push({ url: t, image: '',type: 'image/jpeg' })
+                thumbnails.push({ url: t, image: '',type: 'image/jpeg', isNSFWThumbnail: false })
             })
             setThumbnails(thumbnails)
         } catch (error) {
@@ -70,12 +70,30 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
             setSelectedThumbnailIndex(-1)
             const result = await uploadThumbnail(e.target.files[0])
             const preview = window.URL?.createObjectURL(e.target.files[0])
+            const isNSFWThumbnail = await checkNsfw(preview)
+            setLiveStream({ isNSFWThumbnail })
             setThumbnails([
-                { url: preview, url: result },
+                { url: preview, url: result, isNSFWThumbnail },
                 ...thumbnails
             ])
             setSelectedThumbnailIndex(0)
         }
+    }
+
+    
+    const checkNsfw = async (source) => {
+        const img = document.createElement('img')
+        img.src = source
+        img.height = 200
+        img.width = 400
+        let predictions = []
+        try {
+            const model = await nsfwjs.load()
+            predictions = await model?.classify(img, 3)
+        } catch (error) {
+            console.log('[Error Check NSFW]', error)
+        }
+        return getIsNSFW(predictions)
     }
 
     const onSelectThumbnail = async (index) => {
@@ -91,6 +109,7 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
             )
         } else {
             afterUpload(thumbnails[index].image, 'image/jpeg')
+            setUploadedVideo({ isNSFWThumbnail: thumbnails[index]?.isNSFWThumbnail })
         }
     }
 
