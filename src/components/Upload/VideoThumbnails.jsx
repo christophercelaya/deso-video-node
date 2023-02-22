@@ -26,7 +26,6 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
         try {
             const request = undefined;  
             const jwt = await deso.identity.getJwt(request);
-            console.log('jwt', jwt);
             const response = await UploadImage(jwt, file, user.profile.PublicKeyBase58Check)
             afterUpload(response.data.ImageURL, file.type || 'image/jpeg')
             return response.data.ImageURL

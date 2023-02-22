@@ -50,17 +50,19 @@ const MobileMenu = () => {
           />
           <span className="text-xs">Explore</span>
         </Link>
-        <Link
-          href={UPLOAD}
-          className="flex flex-col space-y-1 items-center justify-center w-full"
-        >
-          <BsCloudUpload size={21}
-            className={clsx({
-              'active-secondary': isActivePath(UPLOAD)
-            })}
-          />
-          <span className="text-xs">Upload</span>
-        </Link>
+        {isLoggedIn ? 
+          <Link
+            href={UPLOAD}
+            className="flex flex-col space-y-1 items-center justify-center w-full"
+          >
+            <BsCloudUpload size={21}
+              className={clsx({
+                'active-secondary': isActivePath(UPLOAD)
+              })}
+            />
+            <span className="text-xs">Upload</span>
+          </Link>
+        : null}
         <Link
           href={LIBRARY}
           className="flex flex-col space-y-1 items-center justify-center w-full"

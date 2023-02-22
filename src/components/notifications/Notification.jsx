@@ -2,7 +2,7 @@
 import React from 'react'
 import Notify from './Notify';
 import { parseNotification } from '@app/utils/functions/parseNotification';
-import { EXTERNAL_LINK } from '@app/utils/constants';
+import { APP, EXTERNAL_LINK } from '@app/utils/constants';
 import IsVerified from '../Common/IsVerified';
 import Link from 'next/link';
 
@@ -24,7 +24,7 @@ function Notification({ ProfilesByPublicKey, reader, PostsByHash, notification }
                         <img
                             src={`${EXTERNAL_LINK}/api/v0/get-single-profile-picture/${
                             notify.actor.PublicKeyBase58Check
-                            }?fallback=https://diamondapp.com/assets/img/default_profile_pic.png`}
+                            }?fallback=${APP.URL}/default_profile_pic.png`}
                             className='w-7 h-7 rounded-full'
                             alt={notify.actor.Username}
                         />
