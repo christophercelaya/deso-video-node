@@ -1,5 +1,5 @@
-import Notification from '@app/components/Notifications/Notification'
-import { Loader } from '@app/components/UI/Loader'
+import Notification from '@components/Notifications/Notification'
+import { Loader } from '@components/UI/Loader'
 import DropMenu from '@components/UI/DropMenu'
 import usePersistStore from '@store/persist'
 import Deso from 'deso-protocol'

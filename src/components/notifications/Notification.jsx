@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import Notify from './Notify';
-import { parseNotification } from '@app/utils/functions/parseNotification';
-import { APP, EXTERNAL_LINK } from '@app/utils/constants';
+import { parseNotification } from '@utils/functions/parseNotification';
+import { APP, EXTERNAL_LINK } from '@utils/constants';
 import IsVerified from '../Common/IsVerified';
 import Link from 'next/link';
 
