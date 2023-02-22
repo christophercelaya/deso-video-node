@@ -30,7 +30,7 @@ const Header = () => {
             isLoggedIn ? (
               <>
                 <NewVideoMenu />
-                <NotificationMenu/>
+                {/* <NotificationMenu/> */}
               </>
             ) : <div className='mr-1'><ThemeSwitch /></div>
           } 
