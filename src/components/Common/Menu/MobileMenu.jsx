@@ -13,7 +13,8 @@ import { TfiVideoCamera } from 'react-icons/tfi'
 
 const MobileMenu = () => {
   const router = useRouter()
-  const { isLoggedIn, user } = usePersistStore()
+  const isLoggedIn = usePersistStore((state) => state.isLoggedIn)
+  const user = usePersistStore((state) => state.user)
 
   const isActivePath = (path) => router.pathname === path
 
