@@ -1,10 +1,11 @@
-import Notification from '../../../components/Notifications/Notification'
+
 import { Loader } from '@components/UI/Loader'
 import DropMenu from '@components/UI/DropMenu'
 import usePersistStore from '@store/persist'
 import Deso from 'deso-protocol'
 import React, { useEffect, useState } from 'react'
 import { CgBell } from 'react-icons/cg'
+import NotificationItem from '@app/components/Notifications/NotificationItem'
 
 const deso = new Deso();
 
@@ -80,7 +81,13 @@ function NotificationMenu() {
                                     <Loader className='w-5 h-5' />
                                 </div>
                                 : notificationsList && notificationsList.Notifications.map((notification, index) => (
-                                <Notification key={index} ProfilesByPublicKey={notificationsList.ProfilesByPublicKey} reader={userPublicKey} PostsByHash={notificationsList.PostsByHash} notification={notification} />
+                                    <NotificationItem
+                                        key={index}
+                                        ProfilesByPublicKey={notificationsList.ProfilesByPublicKey}
+                                        reader={userPublicKey}
+                                        PostsByHash={notificationsList.PostsByHash}
+                                        notification={notification}
+                                    />
                             ))}
                         </div>      
                     </div>

@@ -6,7 +6,7 @@ import { APP, EXTERNAL_LINK } from '@utils/constants';
 import IsVerified from '../Common/IsVerified';
 import Link from 'next/link';
 
-function Notification({ ProfilesByPublicKey, reader, PostsByHash, notification }) {
+const NotificationItem = ({ ProfilesByPublicKey, reader, PostsByHash, notification }) => {
     let profiles = {};
     let posts = {};
     Object.assign(profiles, ProfilesByPublicKey);
@@ -43,4 +43,4 @@ function Notification({ ProfilesByPublicKey, reader, PostsByHash, notification }
     )
 }
 
-export default Notification
+export default NotificationItem
