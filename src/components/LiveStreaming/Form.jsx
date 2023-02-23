@@ -62,7 +62,12 @@ function Form({ onUpload, onCancel }) {
                 }}
             />
             <div className='md:px-16 px-4 max-w-7xl mx-auto mt-5'>
-                <h3 className='mb-5 text-2xl font-bold'>Create Live Stream</h3>
+                <h3 className='mb-4 text-2xl font-bold'>Create Live Stream</h3>
+                <div className='flex w-full mb-5'>
+                    <div className='py-3 text-center text-sm font-medium rounded-md'>
+                        This Live Stream will be auto post on DeSo blockchain and will be available on DeSo nodes.
+                    </div>
+                </div>
                 <div className="grid h-full gap-5 md:grid-cols-2">
                     <div className="flex flex-col rounded-lg p-5 bg-secondary justify-between">
                         <div>

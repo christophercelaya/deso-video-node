@@ -3,9 +3,11 @@ import toast from 'react-hot-toast'
 import Deso from 'deso-protocol';
 import { useState } from 'react';
 import { Button } from '@app/components/UI/Button';
+import usePersistStore from '@app/store/persist';
+import { deleteVideoFromDB } from '@app/data/video';
 
 const DeleteModal = ({ rootRef, show, setShowDeleteModal, video }) => {
-
+    const user = usePersistStore(state => state.user)
     const [loading, setLoading] = useState(false)
 
     const hideVideo = async () => {

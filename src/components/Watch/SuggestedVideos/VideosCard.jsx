@@ -13,14 +13,12 @@ import { getProfileName } from '@utils/functions/getProfileName'
 import ShareModal from '@app/components/Common/Modals/ShareModal'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { useAsset } from '@livepeer/react'
 
 dayjs.extend(relativeTime)
 
 const SuggestedVideoCard = ({ video, channel }) => {
     const [showShare, setShowShare] = useState(false)
     const [showReport, setShowReport] = useState(false)
-    const { data: asset } = useAsset(video?.asset_id);
     return (
         <>
             {!video?.Post?.IsHidden ?  (
@@ -45,7 +43,7 @@ const SuggestedVideoCard = ({ video, channel }) => {
                                             placeholderSrc='https://placekitten.com/144/80'
                                             src={video?.thumbnail}
                                         />
-                                        <ThumbnailOverlays video={video} duration={video?.duration} isProcessing={asset ? asset.status.phase === 'processing' : false} progress={asset ? asset.status.progress : 0} />
+                                        <ThumbnailOverlays video={video} duration={video?.duration} />
                                     </div>
                                 </Link>
                             </div>

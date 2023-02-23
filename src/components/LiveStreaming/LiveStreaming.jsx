@@ -29,7 +29,10 @@ function LiveStreaming() {
     }, [])
 
 
-    const { mutate: createStream, data: stream, status, error } = useCreateStream({ name: liveStream.title, record: true });
+    const { mutate: createStream, data: stream, status, error } = useCreateStream({
+        name: `${liveStream?.title}-Videso.xyz`,
+        record: true
+    });
 
     useEffect(() => {
         if (newPostHash !== null) {
@@ -139,7 +142,7 @@ function LiveStreaming() {
                 toast.success('Congratulations! Post Created.');
                 setResetLiveStream()
                 setTimeout(() => {
-                    router.push(`/watch/${liveStream.data?.data?.id}`)
+                    router.push(`/watch/${data?.data?.id}`)
                 }, 500)
             }
         } catch (error) {

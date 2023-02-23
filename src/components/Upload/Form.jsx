@@ -11,6 +11,8 @@ import { BsCheck } from 'react-icons/bs'
 import { Combobox, Transition } from '@headlessui/react'
 import { LANGUAGES } from '@app/data/languages'
 import { HiChevronUpDown } from "react-icons/hi2";
+import { AiFillCloseCircle } from 'react-icons/ai'
+import { Switch } from '@headlessui/react'
 
 
 function UploadForm({onUpload, onCancel}) {
@@ -22,11 +24,19 @@ function UploadForm({onUpload, onCancel}) {
     const [description, setDescription] = useState('')
     const [language, setLanguage] = useState(LANGUAGES[0])
     const [query, setQuery] = useState('')
+    const [isSensitiveContent, setSensitiveContent] = useState(false)
 
     useEffect(() => {
         setUploadedVideo({ language: language })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[language])
+    }, [language])
+
+    console.log('uploadedVideo', uploadedVideo)
+    
+    useEffect(() => {
+        setUploadedVideo({ isSensitiveContent: isSensitiveContent })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSensitiveContent])
 
     const filteredLanguage =
     query === ''
@@ -60,7 +70,12 @@ function UploadForm({onUpload, onCancel}) {
                 }}
             />
             <div className='md:px-16 px-4 max-w-7xl mx-auto mt-5'>
-                <h3 className='mb-5 text-2xl font-bold'>Upload videos</h3>
+                <h3 className='mb-4 text-2xl font-bold'>Upload videos</h3>
+                <div className='flex w-full mb-5'>
+                    <div className='py-3 text-center text-sm font-medium rounded-md'>
+                        This Video will be auto post on DeSo blockchain after Processing and will be available on DeSo nodes.
+                    </div>
+                </div>
                 <div className="grid h-full gap-5 md:grid-cols-2">
                     <div className="flex flex-col rounded-lg p-5 bg-secondary justify-between">
                         <div>
@@ -169,7 +184,7 @@ function UploadForm({onUpload, onCancel}) {
                                     </Combobox>
                                 </div>
                             </div>
-                            <div className='flex flex-col space-y-2'>
+                            <div className='mb-4 flex flex-col space-y-2'>
                                 <label className='font-medium text-sm'>Tags</label>
                                 <input
                                     type='text'
@@ -201,31 +216,65 @@ function UploadForm({onUpload, onCancel}) {
                                     ))}
                                 </div>
                             </div>
+                            <div className='flex flex-col space-y-2'>
+                                <label className='font-medium text-sm'>Does this video contain sensitive information that targets an adult audience?</label>
+                                <Switch
+                                    checked={isSensitiveContent}
+                                    onChange={setSensitiveContent}
+                                    className={`${
+                                        isSensitiveContent ? 'bg-gradient-to-r from-brand-500 to-pink-600' : 'bg-gray-200'
+                                    } relative inline-flex h-6 w-11 items-center rounded-full`}
+                                    >
+                                    <span
+                                        className={`${
+                                        isSensitiveContent ? 'translate-x-6 from-white to-white' : 'translate-x-1'
+                                        } inline-block h-4 w-4 transform rounded-full bg-gradient-to-r from-brand-500 to-pink-600 transition`}
+                                    />
+                                </Switch>
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col items-start justify-between">
                         <UploadVideo />
                     </div>
                 </div>
-                <div className="flex relative z-0 items-center space-x-4 justify-start mt-5">
-                    <Button
-                        loading={uploadedVideo.loading || uploadedVideo.uploadingThumbnail}
-                        disabled={uploadedVideo.loading || uploadedVideo.uploadingThumbnail || !uploadedVideo.thumbnail}
-                        onClick={() => onUpload()}
-                    >
-                        {uploadedVideo.uploadingThumbnail
-                        ? 'Uploading thumbnail'
-                        : uploadedVideo.buttonText}
-                    </Button>
-                    <Button
-                        variant="light"
-                        disabled={uploadedVideo.loading || uploadedVideo.uploadingThumbnail}
-                        onClick={() => onCancel()}
-                        type="button"
-                    >
-                        Cancel
-                    </Button>
-                </div>
+                {uploadedVideo.isNSFWThumbnail ? (
+                    <div className='mt-5 bg-red-500 text-sm text-center text-white rounded-xl p-4'>
+                        <span>
+                            Sorry! <b className="px-0.5">Selected thumbnail</b> image has
+                            some content warnings. It contains NSFW content, choose
+                            different thumbnail.
+                        </span>
+                    </div>
+                ) : uploadedVideo.isNSFW ? (
+                    <div className='mt-5 bg-red-500 text-sm text-center text-white rounded-xl p-4'>
+                        <span>
+                            Sorry! This <b className="px-0.5">Video</b> has some content
+                            warnings. It contains NSFW content in some frames, and so you can&apos;t post this Video!
+                        </span>
+                    </div>
+                ) : (
+                    <div className="flex relative z-0 items-center space-x-4 justify-start mt-5">
+                        <Button
+                            loading={uploadedVideo.loading || uploadedVideo.uploadingThumbnail}
+                            disabled={uploadedVideo.loading || uploadedVideo.uploadingThumbnail || !uploadedVideo.thumbnail}
+                            onClick={() => onUpload()}
+                        >
+                            {uploadedVideo.uploadingThumbnail
+                                ? 'Uploading thumbnail'
+                                : uploadedVideo.buttonText}
+                        </Button>
+                        <Button
+                            variant="light"
+                            disabled={uploadedVideo.loading || uploadedVideo.uploadingThumbnail}
+                            onClick={() => onCancel()}
+                            type="button"
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                )}
+                
             </div>
         </>
     )

@@ -9,9 +9,6 @@ import WatchLater from '@components/Common/WatchLater'
 import { useEffect, useState } from 'react'
 import { addWatchLater, getWatchLater, removeWatchLater } from '@app/data/watchlater'
 import { BiTrash } from 'react-icons/bi'
-import { toast } from 'react-hot-toast'
-import Deso from 'deso-protocol'
-import { deleteVideoFromDB } from '@app/data/video'
 import DeleteModal from '../Modals/DeleteModal'
 
 const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = true}) => {

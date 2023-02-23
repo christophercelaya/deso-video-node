@@ -33,7 +33,7 @@ function Upload() {
         // we use a `const` assertion here to provide better Typescript types
         // for the returned data
         uploadedVideo.file
-        ? { sources: [{ name: uploadedVideo.file.name, file: uploadedVideo.file }], noWait: true, }
+        ? { sources: [{ name: `${uploadedVideo?.title}-Videso.xyz`, file: uploadedVideo.file }], noWait: true, }
         : null,
     );
 
@@ -75,53 +75,13 @@ function Upload() {
 
     useEffect(() => {
         if (uploadedVideo.readyToPost) {
-           post();
+           saveToDB();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uploadedVideo])
 
     const onCancel = () => {
         setResetUploadedVideo()
-    }
-
-    const post = async () => {
-        try {
-            const body = `${uploadedVideo.description} \n ${uploadedVideo.tags.map(tag => `#${tag}`)} \n\n Posted on @Videso`
-            const extraData = {
-                Title: uploadedVideo.title,
-                Tags: uploadedVideo.tags,
-                Category: uploadedVideo.videoCategory.tag,
-                Language: uploadedVideo.language,
-                Thumbnail: uploadedVideo.thumbnail,
-                isSensitiveContent: uploadedVideo.isSensitiveContent,
-                isNSFW: uploadedVideo.isNSFW,
-                isNSFWThumbnail: uploadedVideo.isNSFWThumbnail,
-                videoData: uploadedVideo.videoData,
-                videoURL: uploadedVideo.videoURL,
-                playbackId: uploadedVideo.playbackId,
-                isLivePeer: true,
-                Duration: uploadedVideo.durationInSeconds
-            }
-            const payload = {
-                UpdaterPublicKeyBase58Check: user.profile.PublicKeyBase58Check,
-                BodyObj: {
-                    Body: body,
-                    ImageURLs: [],
-                    VideoURLs: [`https://lvpr.tv/?v=${uploadedVideo.playbackId}&autoplay=false`],
-                },
-                PostExtraData: {
-                    Videso: JSON.stringify(extraData),
-                }
-            }
-            const result = await deso.posts.submitPost(payload);
-            if (result && result.submittedTransactionResponse.PostEntryResponse.PostHashHex) {
-                const newPost = result.submittedTransactionResponse.PostEntryResponse.PostHashHex
-                setNewPostHash(newPost)
-            }
-        } catch (error) {
-            console.log(error)
-            toast.error(`Error: ${error.message}`);
-        }
     }
     
     const saveToDB = async () => {
@@ -132,7 +92,6 @@ function Upload() {
                 category: uploadedVideo.videoCategory.tag,
                 tags: JSON.stringify(uploadedVideo.tags),
                 user_id: user.profile.PublicKeyBase58Check,
-                posthash: newPostHash,
                 language: uploadedVideo.language,
                 thumbnail: uploadedVideo.thumbnail,
                 isSensitiveContent: uploadedVideo.isSensitiveContent,

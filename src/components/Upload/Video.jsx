@@ -18,7 +18,8 @@ function UploadVideo() {
         if (currentVideo && !uploadedVideo.isNSFW) {
             try {
                 const model = await nsfwjs.load()
-                const predictions = await model?.classify(currentVideo, 5)
+                const predictions = await model?.classify(currentVideo)
+                console.log('[Predictions]', predictions)
                 setUploadedVideo({
                     buttonText: 'Submit Video',
                     loading: false,
@@ -73,20 +74,13 @@ function UploadVideo() {
                                 type={uploadedVideo.videoType || 'video/mp4'}
                             />
                         </video>
-                        <div className="py-0.5 absolute top-2 px-2 z-10 left-2 text-xs uppercase bg-brand-200 text-black rounded-full">
+                        <div className="py-0.5 absolute top-2 px-2 z-10 left-2 text-xs uppercase bg-pink-200 text-black rounded-full">
                             {uploadedVideo.file?.size && (
                                 <span className="whitespace-nowrap font-semibold">
                                 {formatBytes(uploadedVideo.file?.size)}
                                 </span>
                             )}
                         </div>
-                    </div>
-                    <div className="py-0.5 absolute top-2 px-2 z-10 left-2 text-xs uppercase bg-brand-200 text-black rounded-full">
-                        {uploadedVideo.file?.size && (
-                            <span className="whitespace-nowrap font-semibold">
-                            {formatBytes(uploadedVideo.file?.size)}
-                            </span>
-                        )}
                     </div>
                 </div>
                 

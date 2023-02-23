@@ -11,11 +11,13 @@ export const GetCategoryFeed = async ({ queryKey }) => {
     if (posts && posts.length > 0) {
         for( let i = 0; i < posts.length; i++) {
             const userProfile = await getUserProfile(posts[i].user_id)
-            const chainPost = await getPost(posts[i].posthash, reader)
-            const associationsCount = await getPostAssociations(posts[i].posthash)
             posts[i].ProfileEntryResponse = userProfile
-            posts[i].Post = chainPost
-            posts[i].AssociationsCount = associationsCount
+            if (posts[i].posthash !== null) {
+                const chainPost = await getPost(posts[i].posthash, reader)
+                const associationsCount = await getPostAssociations(posts[i].posthash)
+                posts[i].Post = chainPost
+                posts[i].AssociationsCount = associationsCount
+            }
         }
         return posts
     } else {

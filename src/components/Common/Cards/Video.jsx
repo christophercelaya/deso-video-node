@@ -13,7 +13,6 @@ import { isBrowser } from 'react-device-detect'
 import { getProfileName } from '@utils/functions/getProfileName'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { useAsset } from '@livepeer/react'
 
 dayjs.extend(relativeTime)
 
@@ -21,7 +20,6 @@ dayjs.extend(relativeTime)
 const VideoCard = ({ video, userProfile }) => {
   const [showShare, setShowShare] = useState(false)
   const [showReport, setShowReport] = useState(false)
-  const { data: asset } = useAsset(video?.asset_id);
 
   return (
     <>
@@ -42,7 +40,7 @@ const VideoCard = ({ video, userProfile }) => {
                     placeholderSrc='/default.jpg'
                     src={video?.thumbnail}
                 />
-                <ThumbnailOverlays video={video} duration={video?.duration} isProcessing={asset ? asset.status.phase === 'processing' : false} progress={asset ? asset.status.progress : 0} />
+                <ThumbnailOverlays video={video} duration={video?.duration} />
               </div>
             </Link>
             <div className="p-2">

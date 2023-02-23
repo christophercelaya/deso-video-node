@@ -44,3 +44,8 @@ export const deleteVideoFromDB = async (id, user_id) => {
     console.log('delete', response.data);
     return response;
 }
+
+export const updateVideo = async (req) => {
+    const response = await axios.post(`${SERVER_URL}/update-video`, req);
+    return response;
+}

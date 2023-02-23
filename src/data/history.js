@@ -9,11 +9,13 @@ export const GetHistoryFeed = async (limit, reader, page = 0) => {
     if (posts && posts.length > 0) {
         for( let i = 0; i < posts.length; i++) {
             const userProfile = await getUserProfile(posts[i].videos.user_id)
-            const chainPost = await getPost(posts[i].videos.posthash, reader)
-            const associationsCount = await getPostAssociations(posts[i].videos.posthash)
             posts[i].ProfileEntryResponse = userProfile
-            posts[i].videos.Post = chainPost
-            posts[i].videos.AssociationsCount = associationsCount
+            if (posts[i].posthash !== null) {
+                const chainPost = await getPost(posts[i].posthash, reader)
+                const associationsCount = await getPostAssociations(posts[i].posthash)
+                posts[i].Post = chainPost
+                posts[i].AssociationsCount = associationsCount
+            }
         }
         return posts
     } else {
