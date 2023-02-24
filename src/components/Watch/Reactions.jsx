@@ -19,7 +19,7 @@ const Reactions = ({ video, iconSize = '21', showTipButton = false, showDiamondB
     const [liked, setLiked] = useState(isComment ? video?.PostEntryReaderState.LikedByReader : video?.Post?.PostEntryReaderState.LikedByReader)
     const [diamondBestowed, setDiamondBestowed] = useState(isComment ? video?.PostEntryReaderState.DiamondLevelBestowed : video?.Post?.PostEntryReaderState.DiamondLevelBestowed)
     const [diamonds, setDiamonds] = useState(isComment ? video?.DiamondCount : video?.Post?.DiamondCount)
-    const [likes, setLikes] = useState(isComment ? video?.LikeCount : video?.AssociationsCount?.LIKE + video?.Post?.LikeCount);
+    const [likes, setLikes] = useState(isComment ? video?.LikeCount : video?.Post?.LikeCount);
     const [showTip, setShowTip] = useState(false)
     const [showDiamond, setShowDiamond] = useState(false)
     const likeRef = useRef(null)

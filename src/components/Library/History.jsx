@@ -59,7 +59,7 @@ const History = () => {
                         <>
                             {videos.map((video) => {
                                 return (
-                                    <VideoCardSmall userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video.videos} />
+                                    <VideoCardSmall key={`${video.id}`} video={video.videos} />
                                 )
                             })}
                         </>
@@ -73,7 +73,7 @@ const History = () => {
                         >
                             {videos.map((video) => {
                                     return (
-                                        <VideoCardSmall userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video.videos} />
+                                        <VideoCardSmall key={`${video.id}`} video={video.videos} />
                                     )
                                 })
                             }

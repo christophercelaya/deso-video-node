@@ -50,7 +50,7 @@ const WatchedVideos = () => {
             {videos.pages.map(page => 
               page.map(video => {
                 return (
-                  <VideoCard userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video.videos} />
+                  <VideoCard key={`${video.id}`} video={video.videos} />
                 )
               })
             )}

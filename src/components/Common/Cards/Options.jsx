@@ -11,10 +11,10 @@ import { addWatchLater, getWatchLater, removeWatchLater } from '@app/data/watchl
 import { BiTrash } from 'react-icons/bi'
 import DeleteModal from '../Modals/DeleteModal'
 
-const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = true}) => {
+const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = true, userProfile, post}) => {
   const { isLoggedIn, user } = usePersistStore();
   const reporterID = isLoggedIn ? user.profile.PublicKeyBase58Check : APP.PublicKeyBase58Check;
-  const isVideoOwner = isLoggedIn ? user.profile.PublicKeyBase58Check === video?.ProfileEntryResponse?.PublicKeyBase58Check : false
+  const isVideoOwner = isLoggedIn ? user.profile.PublicKeyBase58Check === userProfile?.PublicKeyBase58Check : false
   const [alreadyAddedToWatchLater, setAlreadyAddedToWatchLater] = useState(false)
   const reader = isLoggedIn ? user.profile.PublicKeyBase58Check : APP.PublicKeyBase58Check;
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -82,7 +82,7 @@ const VideoOptions = ({video, setShowShare, isSuggested = false, showOnHover = t
             </button>
             {isLoggedIn ? <WatchLater onClickWatchLater={onClickWatchLater} alreadyAddedToWatchLater={alreadyAddedToWatchLater} /> : null}
             <a
-              href={`https://desoreporting.aidaform.com/content?ReporterPublicKey=${reporterID}&PostHash=${video.PostHashHex}&ReportedAccountPublicKey=${video.ProfileEntryResponse?.PublicKeyBase58Check}&ReportedAccountUsername=${video.ProfileEntryResponse?.Username}`}
+              href={`https://desoreporting.aidaform.com/content?ReporterPublicKey=${reporterID}&PostHash=${video.posthash}&ReportedAccountPublicKey=${userProfile?.PublicKeyBase58Check}&ReportedAccountUsername=${userProfile?.Username}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-3 py-2 space-x-3 hover-primary"

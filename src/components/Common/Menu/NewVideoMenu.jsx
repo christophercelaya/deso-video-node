@@ -2,7 +2,7 @@ import { Menu } from '@headlessui/react'
 import { useRouter } from 'next/router'
 import { RiVideoAddLine } from 'react-icons/ri'
 import DropMenu, { NextLink } from '../../UI/DropMenu'
-import { TfiPencilAlt, TfiVideoCamera } from "react-icons/tfi";
+import { TfiVideoCamera } from "react-icons/tfi";
 import usePersistStore from '@store/persist';
 import { MdSensors } from 'react-icons/md';
 

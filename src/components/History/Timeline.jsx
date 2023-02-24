@@ -11,7 +11,9 @@ const Timeline = () => {
     const { isLoggedIn, user } = usePersistStore()
     const reader = user.profile.PublicKeyBase58Check;
 
-    const { isError, isSuccess, data:videos } = FetchHistoryFeed( 32, reader );
+    const { isError, isSuccess, data: videos } = FetchHistoryFeed(32, reader);
+    
+    console.log(videos)
     
     if (videos?.length === 0) {
         return (
@@ -39,7 +41,7 @@ const Timeline = () => {
                     <div className="grid gap-x-4 lg:grid-cols-4 md:gap-y-4 gap-y-2 2xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-col-1">
                         {videos.map(video => {
                             return (
-                                <VideoCard userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video?.videos} />
+                                <VideoCard key={`${video.id}`} video={video?.videos} />
                             )
                         })}
                     </div>

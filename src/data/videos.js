@@ -8,16 +8,16 @@ export const GetLatestFeed = async (output = 32, reader, offset) => {
     const response = await axios.post(`${SERVER_URL}/latest-videos`, { limit: output, offset: offset })
     const posts = response.data.data;
     if (posts && posts.length > 0) {
-        for( let i = 0; i < posts.length; i++) {
-            const userProfile = await getUserProfile(posts[i].user_id)
-            if (posts[i].posthash !== null) {
-                const chainPost = await getPost(posts[i].posthash, reader)
-                const associationsCount = await getPostAssociations(posts[i].posthash)
-                posts[i].Post = chainPost
-                posts[i].AssociationsCount = associationsCount
-            }
-            posts[i].ProfileEntryResponse = userProfile
-        }
+        // for( let i = 0; i < posts.length; i++) {
+        //     const userProfile = await getUserProfile(posts[i].user_id)
+        //     if (posts[i].posthash !== null) {
+        //         const chainPost = await getPost(posts[i].posthash, reader)
+        //         const associationsCount = await getPostAssociations(posts[i].posthash)
+        //         posts[i].Post = chainPost
+        //         posts[i].AssociationsCount = associationsCount
+        //     }
+        //     posts[i].ProfileEntryResponse = userProfile
+        // }
         return posts
     } else {
         return []
@@ -54,10 +54,10 @@ export const getSinglePost = async ({ queryKey }) => {
         if (post) {
             const userProfile = await getUserProfile(post.user_id)
             const chainPost = await getPost(post.posthash, reader)
-            const associationsCount = await getPostAssociations(post.posthash)
+            // const associationsCount = await getPostAssociations(post.posthash)
+            // post.AssociationsCount = associationsCount
             post.ProfileEntryResponse = userProfile
             post.Post = chainPost
-            post.AssociationsCount = associationsCount
             return post
         }
         return null

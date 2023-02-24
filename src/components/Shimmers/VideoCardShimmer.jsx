@@ -1,5 +1,26 @@
 import React from 'react'
 
+export const VideoCardInfoShimmer = () => {
+  return (
+    <div className="flex items-start space-x-2.5 animate-pulse">
+      <div className='w-9 h-9 rounded-full bg-gray-300 dark:bg-gray-700' />
+      <div className="grid flex-1">
+        <div className='flex w-full items-start space-x-5 justify-between '>
+          <div className="flex flex-col w-full items-start space-y-2 justify-between min-w-0">
+            <div className="bg-gray-300 h-2 w-full rounded-xl dark:bg-gray-700" />
+            <div className="bg-gray-300 h-2 w-1/3 rounded-xl dark:bg-gray-700" />
+            <div className="flex space-x-2">
+              <div className="bg-gray-300 h-2 w-12 rounded-xl dark:bg-gray-700" />
+              <div className="bg-gray-300 h-2 w-12 rounded-xl dark:bg-gray-700" />
+            </div>
+          </div>
+          <div className="bg-gray-300 h-2 w-8 rounded-xl dark:bg-gray-700" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export const CardShimmer = () => {
   return (
     <div className="w-full">

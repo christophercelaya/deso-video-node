@@ -50,7 +50,7 @@ function RecentVideos() {
               {videos.pages.map(page => 
                 page.map(video => {
                   return (
-                    <VideoCard userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video} />
+                    <VideoCard key={`${video.id}`} video={video} />
                   )
                 })
               )}

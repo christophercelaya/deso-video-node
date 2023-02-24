@@ -50,7 +50,7 @@ function AllVideos({video, currentVideoId}) {
                 videos.pages.map(page => 
                 page.map(video => {
                   return (
-                    <SuggestedVideoCard userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video} />
+                    <SuggestedVideoCard key={`${video.id}`} video={video} />
                   )
                 })
               )

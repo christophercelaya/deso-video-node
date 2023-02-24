@@ -61,7 +61,7 @@ const WatchLater = () => {
                     <>
                         {videos.map((video) => {
                             return (
-                                <VideoCardSmall userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video.videos} />
+                                <VideoCardSmall key={`${video.id}`} video={video.videos} />
                             )
                         })}
                     </>
@@ -75,7 +75,7 @@ const WatchLater = () => {
                     >
                         {videos.map((video) => {
                                 return (
-                                    <VideoCardSmall userProfile={video.ProfileEntryResponse} key={`${video.id}`} video={video.videos} />
+                                    <VideoCardSmall key={`${video.id}`} video={video.videos} />
                                 )
                             })
                         }
