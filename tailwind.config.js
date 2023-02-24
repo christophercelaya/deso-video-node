@@ -15,14 +15,13 @@ module.exports = {
         green: colors.emerald,
         purple: colors.violet,
         yellow: colors.yellow,
-        brand: colors.violet,
+        brand: colors.orange,
         brand2: colors.pink,
       }
     }
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
-    require('@vidstack/player/tailwind.cjs'),
     require('@tailwindcss/line-clamp')
   ]
 }
