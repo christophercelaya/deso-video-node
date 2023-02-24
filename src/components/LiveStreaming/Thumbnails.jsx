@@ -10,6 +10,7 @@ import { UploadImage } from '@data/image'
 import usePersistStore from '@store/persist'
 import * as tf from '@tensorflow/tfjs'
 import * as nsfwjs from 'nsfwjs'
+import { getIsNSFW } from '@app/utils/functions/getIsNSFW'
 
 const DEFAULT_THUMBNAIL_INDEX = 0
 export const THUMBNAIL_GENERATE_COUNT = 0
