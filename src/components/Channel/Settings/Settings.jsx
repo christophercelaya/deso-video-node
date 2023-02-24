@@ -88,6 +88,7 @@ function Settings() {
             };
             const response = await deso.media.uploadImage(request);
             if (response.ImageURL !== "") {
+                const extraData = getProfileExtraData(user.profile);
                 setNewCover(response.ImageURL);
                 const payload = {
                     ProfileImage: extraData.ProfileImage,
@@ -155,6 +156,7 @@ function Settings() {
             };
             const response = await deso.media.uploadImage(request);
             if (response.ImageURL !== "") {
+                const extraData = getProfileExtraData(user.profile);
                 setNewAvatar(response.ImageURL);
                 const payload = {
                     ProfileImage: response.ImageURL,
