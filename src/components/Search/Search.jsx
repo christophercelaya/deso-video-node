@@ -59,8 +59,6 @@ const Search = () => {
     //setShowSearchModal(false);
   }
 
-  console.log(showSearchModal)
-
   const ref = useDetectClickOutside({ onTriggered: clearSearch });
 
   return (

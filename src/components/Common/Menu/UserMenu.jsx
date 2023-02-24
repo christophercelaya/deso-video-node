@@ -20,17 +20,12 @@ import { getProfilePicture } from '@utils/functions/getProfilePicture';
 
 function UserMenu() {
     const router = useRouter()
-    const { setLoggedIn, isLoggedIn, user, setUser } = usePersistStore()
+    const { setLoggedIn, isLoggedIn, user, setUser, setIsNewUser, setNewUser } = usePersistStore()
     const [loading, setLoading] = useState(false)
-    const [deso, setDeso] = useState(null)
-
-    useEffect(() => {
-        const deso = new Deso(DESO_CONFIG);
-        setDeso(deso)
-    }, [])
 
     const loginWithDeso = async () => {
         setLoading(true)
+        const deso = new Deso();
         try {
             const request = 3;
             const response = await deso.identity.login(request);
@@ -44,8 +39,11 @@ function UserMenu() {
                     setLoggedIn(true);
                     setLoading(false)
                 } catch (error) {
-                    toast.error(error.message);
-                    console.log(error);
+                    // toast.error(error.message);
+                    // console.log(error);
+                    setIsNewUser(true)
+                    setNewUser({ profile: response})
+                    router.push('/signup')
                     setLoading(false)
 
                 }
@@ -61,6 +59,7 @@ function UserMenu() {
     }
 
     const logout = async () => {
+        const deso = new Deso();
         const request = user.profile.PublicKeyBase58Check;
         try {
             const response = await deso.identity.logout(request);

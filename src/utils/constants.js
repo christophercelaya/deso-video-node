@@ -64,6 +64,7 @@ export const EXTERNAL_LINK = process.env.NEXT_PUBLIC_EXTERNAL_URL || 'https://di
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://videso.xyz';
 export const VIDEO_CDN_URL = 'https://cdn.livepeer.com'
 export const SERVER_URL = 'https://server.videso.xyz'
+export const MIN_DESO_TO_CREATE_PROFILE = 0.001
 
 export const DESO_CONFIG = {
   nodeUri: BASE_URI

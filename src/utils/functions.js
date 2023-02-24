@@ -208,7 +208,15 @@ export const removeQueryParam = (url) => {
   return hasQueryParams(url) ? url.substring(0, url.indexOf('?')) : url
 }
 
-
 export const capitalizeText = (text) => {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
+
+export const getBase64FromFile = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+};
