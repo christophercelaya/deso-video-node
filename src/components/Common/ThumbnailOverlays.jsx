@@ -21,7 +21,7 @@ const ThumbnailOverlays = ({ video, duration }) => {
   }, [])
 
   useEffect(() => {
-    if (readyToPost && video?.posthash === null && video?.is_processed === false) {
+    if (isReady && video?.posthash === null && video?.is_processed === false) {
       post();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
