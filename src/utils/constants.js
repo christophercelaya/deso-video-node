@@ -65,6 +65,10 @@ export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://videso.xyz'
 export const VIDEO_CDN_URL = 'https://cdn.livepeer.com'
 export const SERVER_URL = 'https://server.videso.xyz'
 export const MIN_DESO_TO_CREATE_PROFILE = 0.001
+export const IPFS_GATEWAY = 'https://gateway.ipfscdn.io/ipfs/'
+export const NEXT_PUBLIC_EVER_BUCKET_NAME = 'videso'
+export const EVER_ENDPOINT = 'https://endpoint.4everland.co'
+export const EVER_REGION = 'us-west-2'
 
 export const DESO_CONFIG = {
   nodeUri: BASE_URI

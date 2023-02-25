@@ -17,6 +17,7 @@ import { getPost, getPostAssociations, getUserProfile } from '@app/data/videos'
 import { APP } from '@app/utils/constants'
 import usePersistStore from '@app/store/persist'
 import { VideoCardInfoShimmer } from '@app/components/Shimmers/VideoCardShimmer'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
 
 dayjs.extend(relativeTime)
 
@@ -71,7 +72,7 @@ const VideoCard = ({ video }) => {
                 wrapperClassName='w-full'
                 effect="blur"
                 placeholderSrc='/default.jpg'
-                src={video?.thumbnail}
+                src={sanitizeIPFSURL(video?.thumbnail)}
             />
             <ThumbnailOverlays video={video} duration={video?.duration} />
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import ThumbnailsShimmer from '@components/Shimmers/ThumbnailsShimmer'
 import { Loader } from '@components/UI/Loader'
 import clsx from 'clsx'
@@ -7,8 +8,12 @@ import { getFileFromDataURL } from '@utils/functions/getFileFromDataURL'
 import useAppStore from '@store/app'
 import { useEffect, useState } from 'react'
 import Deso from 'deso-protocol';
-import { UploadImage } from '@data/image'
 import usePersistStore from '@store/persist'
+import { getIsNSFW } from '@app/utils/functions/getIsNSFW'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
+import { uploadToIPFS } from '@app/utils/functions/uploadToIPFS'
+import * as tf from '@tensorflow/tfjs'
+import * as nsfwjs from 'nsfwjs'
 
 const DEFAULT_THUMBNAIL_INDEX = 0
 export const THUMBNAIL_GENERATE_COUNT = 3
@@ -22,13 +27,13 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
 
     const uploadThumbnail = async (file) => {
         setUploadedVideo({ uploadingThumbnail: true })
-        const deso = new Deso();
         try {
-            const request = undefined;  
-            const jwt = await deso.identity.getJwt(request);
-            const response = await UploadImage(jwt, file, user.profile.PublicKeyBase58Check)
-            afterUpload(response.data.ImageURL, file.type || 'image/jpeg')
-            return response.data.ImageURL
+            const response = await uploadToIPFS(file)
+            const preview = window.URL?.createObjectURL(file)
+            const isNSFWThumbnail = await checkNsfw(preview)
+            setUploadedVideo({ isNSFWThumbnail })
+            afterUpload(response.url, file.type || 'image/jpeg')
+            return response.url
         } catch (error) {
             console.log(error)
         } finally {
@@ -44,7 +49,7 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
             )
             const thumbnails = []
             thumbnailArray.forEach((t) => {
-                thumbnails.push({ url: t, image: '',type: 'image/jpeg', isNSFWThumbnail: false })
+                thumbnails.push({ url: t, image: '', type: 'image/jpeg', isNSFWThumbnail: false })
             })
             setThumbnails(thumbnails)
         } catch (error) {
@@ -69,10 +74,8 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
             setSelectedThumbnailIndex(-1)
             const result = await uploadThumbnail(e.target.files[0])
             const preview = window.URL?.createObjectURL(e.target.files[0])
-            const isNSFWThumbnail = await checkNsfw(preview)
-            setLiveStream({ isNSFWThumbnail })
             setThumbnails([
-                { url: preview, url: result, isNSFWThumbnail },
+                { url: preview, ipfsurl: result, isNSFWThumbnail: false },
                 ...thumbnails
             ])
             setSelectedThumbnailIndex(0)
@@ -88,7 +91,7 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
         let predictions = []
         try {
             const model = await nsfwjs.load()
-            predictions = await model?.classify(img, 3)
+            predictions = await model?.classify(img, 5)
         } catch (error) {
             console.log('[Error Check NSFW]', error)
         }
@@ -102,7 +105,7 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
             const ipfsResult = await uploadThumbnail(file)
             setThumbnails(
                 thumbnails.map((t, i) => {
-                    if (i === index) t.image = ipfsResult
+                    if (i === index) t.ipfsurl = ipfsResult
                     return t
                 })
             )
@@ -156,7 +159,7 @@ const VideoThumbnails = ({ label, afterUpload, file }) => {
                     >
                     <img
                         className="object-cover w-full h-20 rounded-md"
-                        src={thumbnail.url}
+                        src={thumbnail.ipfsurl ? sanitizeIPFSURL(thumbnail.ipfsurl) : thumbnail.url}
                         alt="thumbnail"
                         draggable={false}
                     />

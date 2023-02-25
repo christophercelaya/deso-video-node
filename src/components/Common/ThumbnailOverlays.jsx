@@ -9,10 +9,9 @@ const ThumbnailOverlays = ({ video, duration }) => {
   const { data: asset } = useAsset(video?.asset_id);
   const isProcessing = asset ? asset.status.phase === 'processing' : false
   const isReady = asset ? asset.status.phase === 'ready' : false
+  const isFailed = asset ? asset.status.phase === 'failed' : false
   const progress = asset ? asset.status.progress : 0
   const [readyToPost, setReadyToPost] = useState(false)
-
-
 
   useEffect(() => {
     if (isReady) {
@@ -26,7 +25,7 @@ const ThumbnailOverlays = ({ video, duration }) => {
       post();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [readyToPost])
+  }, [])
 
   const post = async () => {
     const deso = new Deso();
@@ -63,6 +62,9 @@ const ThumbnailOverlays = ({ video, duration }) => {
       if (result && result.submittedTransactionResponse.PostEntryResponse.PostHashHex) {
         const newPost = result.submittedTransactionResponse.PostEntryResponse.PostHashHex
         const res = await updateVideo({id: video?.id, user_id: video?.user_id, posthash: newPost, is_processed: true })
+        if (res) {
+          window.location.reload()
+        }
       }
     } catch (error) {
       console.log(error)
@@ -76,7 +78,7 @@ const ThumbnailOverlays = ({ video, duration }) => {
       <div>
         {isProcessing ? (
           <span className="py-0.5 absolute animate-pulse top-3 left-2 text-xs px-1 text-white bg-red-600 rounded">
-            Processing {progress*100}%
+            {!isFailed ? `Processing ${Math.round(progress * 100)}%` : `Processing Failed`}
           </span>
         ) : null}
         {video?.is_live ?

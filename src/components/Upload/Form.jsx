@@ -30,8 +30,6 @@ function UploadForm({onUpload, onCancel}) {
         setUploadedVideo({ language: language })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [language])
-
-    console.log('uploadedVideo', uploadedVideo)
     
     useEffect(() => {
         setUploadedVideo({ isSensitiveContent: isSensitiveContent })

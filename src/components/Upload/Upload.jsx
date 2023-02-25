@@ -3,14 +3,11 @@ import usePersistStore from '@store/persist'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import DropZone from './DropZone'
-import Deso from 'deso-protocol'
 import UploadForm from './Form'
 import toast from 'react-hot-toast'
 import { useCreateAsset } from '@livepeer/react';
 import { SERVER_URL } from '@utils/constants'
 import axios from 'axios'
-
-const deso = new Deso();
 
 function Upload() {
     const {isLoggedIn, user} = usePersistStore()
@@ -65,9 +62,8 @@ function Upload() {
         } else {
             setLoading(false);
         }
-        if (assets && assets[0] && assets[0].status?.phase === 'waiting') {
-            const videoURL = `https://livepeer-vod.studio/hls/${assets[0]?.playbackId}/video`
-            setUploadedVideo({ videoURL: videoURL, playbackId: assets[0]?.playbackId, asset_id: assets[0]?.id, loading: true, readyToPost: true })
+        if (assets && assets[0] && assets[0]?.playbackId) {
+            setUploadedVideo({ playbackId: assets[0]?.playbackId, asset_id: assets[0]?.id, loading: true, readyToPost: true })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [status, assets])
