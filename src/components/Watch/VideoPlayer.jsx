@@ -5,6 +5,7 @@ import { getCurrentDuration } from '@app/utils/functions/getCurrentDuration'
 import usePersistStore from '@app/store/persist'
 import { updateView } from '@app/data/video'
 import { APP } from '@app/utils/constants'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
 
 const PlayerInstance = ({ video, playerRef }) => {
 
@@ -13,7 +14,7 @@ const PlayerInstance = ({ video, playerRef }) => {
       <Player
         title={video?.title}
         mediaElementRef={playerRef}
-        poster={video?.thumbnail}
+        poster={sanitizeIPFSURL(video?.thumbnail)}
         playbackId={video?.playbackId}
         aspectRatio='16to9'
         objectFit="contain"
