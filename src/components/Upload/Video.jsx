@@ -7,6 +7,7 @@ import ProgressBar from '../UI/ProgressBar'
 import { getIsNSFW } from '@utils/functions/getIsNSFW'
 import * as tf from '@tensorflow/tfjs'
 import * as nsfwjs from 'nsfwjs'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
 
 function UploadVideo() {
     const uploadedVideo = useAppStore((state) => state.uploadedVideo)
@@ -65,7 +66,7 @@ function UploadVideo() {
                             disablePictureInPicture
                             disableRemotePlayback
                             controlsList="nodownload noplaybackrate"
-                            poster={uploadedVideo.thumbnail}
+                            poster={sanitizeIPFSURL(uploadedVideo.thumbnail)}
                             controls
                             src={uploadedVideo.preview}
                         >

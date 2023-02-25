@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import ProgressBar from '../UI/ProgressBar'
 import VideoThumbnails from './Thumbnails'
 import { Player } from '@livepeer/react'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
 
 function UploadVideo({isDashboard = false}) {
     const liveStream = useAppStore((state) => state.liveStream)
@@ -23,7 +24,7 @@ function UploadVideo({isDashboard = false}) {
                         {liveStream && liveStream?.readyToLive ? (
                             <Player
                                 title={liveStream?.title}
-                                poster={liveStream?.thumbnail}
+                                poster={sanitizeIPFSURL(liveStream?.thumbnail)}
                                 playbackId={liveStream?.playbackId}
                                 aspectRatio='16to9'
                                 objectFit="contain"
@@ -35,7 +36,7 @@ function UploadVideo({isDashboard = false}) {
                             />
                         ) : liveStream?.thumbnail ? (
                                 <div className="flex flex-col items-center justify-center w-full h-full aspect-w-16 aspect-h-9">
-                                    <img src={liveStream?.thumbnail} alt='' className="w-full h-full object-cover" />
+                                    <img src={sanitizeIPFSURL(liveStream?.thumbnail)} alt='' className="w-full h-full object-cover" />
                                 </div>
                         ): null}
                     </div>

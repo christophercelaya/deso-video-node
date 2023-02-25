@@ -75,7 +75,7 @@ const SuggestedVideoCard = ({ video, channel }) => {
                                     wrapperClassName='w-full'
                                     effect="blur"
                                     placeholderSrc='https://placekitten.com/144/80'
-                                    src={video?.thumbnail}
+                                    src={sanitizeIPFSURL(video?.thumbnail)}
                                 />
                                 <ThumbnailOverlays video={video} duration={video?.duration} />
                             </div>

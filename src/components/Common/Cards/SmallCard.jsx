@@ -70,7 +70,7 @@ const VideoCardSmall = ({ video }) => {
                             wrapperClassName='w-full'
                             effect="blur"
                             placeholderSrc='/default.jpg'
-                            src={video?.thumbnail}
+                            src={sanitizeIPFSURL(video?.thumbnail)}
                         />
                         <ThumbnailOverlays video={video} duration={video?.duration} />
                     </div>

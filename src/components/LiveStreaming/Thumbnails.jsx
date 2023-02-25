@@ -11,6 +11,8 @@ import usePersistStore from '@store/persist'
 import * as tf from '@tensorflow/tfjs'
 import * as nsfwjs from 'nsfwjs'
 import { getIsNSFW } from '@app/utils/functions/getIsNSFW'
+import { uploadToIPFS } from '@app/utils/functions/uploadToIPFS'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
 
 const DEFAULT_THUMBNAIL_INDEX = 0
 export const THUMBNAIL_GENERATE_COUNT = 0
@@ -24,13 +26,13 @@ const VideoThumbnails = ({ label, afterUpload }) => {
 
     const uploadThumbnail = async (file) => {
         setLiveStream({ uploadingThumbnail: true })
-        const deso = new Deso();
         try {
-            const request = undefined;  
-            const jwt = await deso.identity.getJwt(request);
-            const response = await UploadImage(jwt, file, user.profile.PublicKeyBase58Check)
-            afterUpload(response.data.ImageURL, file.type || 'image/jpeg')
-            return response.data.ImageURL
+            const response = await uploadToIPFS(file)
+            const preview = window.URL?.createObjectURL(file)
+            const isNSFWThumbnail = await checkNsfw(preview)
+            setLiveStream({ isNSFWThumbnail })
+            afterUpload(response.url, file.type || 'image/jpeg')
+            return response.url
         } catch (error) {
             console.log(error)
         } finally {
@@ -46,7 +48,7 @@ const VideoThumbnails = ({ label, afterUpload }) => {
         let predictions = []
         try {
             const model = await nsfwjs.load()
-            predictions = await model?.classify(img, 3)
+            predictions = await model?.classify(img, 5)
         } catch (error) {
             console.log('[Error Check NSFW]', error)
         }
@@ -58,10 +60,8 @@ const VideoThumbnails = ({ label, afterUpload }) => {
             setSelectedThumbnailIndex(0)
             const result = await uploadThumbnail(e.target.files[0])
             const preview = window.URL?.createObjectURL(e.target.files[0])
-            const isNSFWThumbnail = await checkNsfw(preview)
-            setLiveStream({ isNSFWThumbnail })
             setThumbnails([
-                { url: preview, url: result, isNSFWThumbnail },
+                { url: preview, ifpsurl: result, isNSFWThumbnail: false },
                 ...thumbnails
             ])
             setSelectedThumbnailIndex(0)
@@ -118,7 +118,7 @@ const VideoThumbnails = ({ label, afterUpload }) => {
                     >
                         <img
                             className="object-cover w-full h-20 rounded-md"
-                            src={thumbnail.url}
+                            src={thumbnail.ipfsurl ? sanitizeIPFSURL(thumbnail.ipfsurl) : thumbnail.url}
                             alt="thumbnail"
                             draggable={false}
                         />
