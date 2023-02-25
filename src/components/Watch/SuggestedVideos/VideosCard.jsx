@@ -17,6 +17,7 @@ import usePersistStore from '@app/store/persist'
 import { APP } from '@app/utils/constants'
 import { getPost, getPostAssociations, getUserProfile } from '@app/data/videos'
 import { VideoCardInfoShimmer } from '@app/components/Shimmers/VideoCardShimmer'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
 
 dayjs.extend(relativeTime)
 
