@@ -52,7 +52,7 @@ const ThumbnailOverlays = ({ video, duration }) => {
         BodyObj: {
           Body: body,
           ImageURLs: [],
-          VideoURLs: [`https://lvpr.tv/?v=${video.playbackId}&autoplay=false`],
+          VideoURLs: [`https://lvpr.tv/?v=${video?.playbackId}&autoplay=false`],
         },
         PostExtraData: {
           Videso: JSON.stringify(extraData),
