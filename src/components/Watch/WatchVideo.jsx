@@ -15,6 +15,7 @@ import { NextSeo } from 'next-seo'
 import { Comments } from './Comments'
 import { addToHistory } from '@app/data/history'
 import dynamic from 'next/dynamic'
+import sanitizeIPFSURL from '@app/utils/functions/sanitizeIPFSURL'
 //const WatchVideoShimmer = dynamic(() => import('../Shimmers/WatchVideoShimmer'), { ssr: false })
 
 const WatchVideo = () => {
@@ -75,7 +76,7 @@ const WatchVideo = () => {
                         url: `${APP.URL}/watch/${router.asPath}`,
                         images: [
                             {
-                                url: video ? video?.thumbnail : '',
+                                url: video ? sanitizeIPFSURL(video?.thumbnail) : '',
                                 alt: video ? video?.title : 'Watch',
                             },
                         ],
