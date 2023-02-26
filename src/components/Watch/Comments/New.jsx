@@ -1,13 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { getProfilePicture } from '@utils/functions/getProfilePicture'
 import { Button } from '@components/UI/Button'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import InputMentions from '../../UI/InputMentions'
 import { getProfileName } from '@utils/functions/getProfileName'
 import usePersistStore from '@store/persist'
 import { toast } from 'react-hot-toast'
 import { DESO_CONFIG } from '@utils/constants'
 import Deso from 'deso-protocol'
+import EmojiPicker, { EmojiStyle } from 'emoji-picker-react'
+import useOutsideClick from '@utils/hooks/useOutsideClick'
+import { BsEmojiSmile, BsFillEmojiSmileFill } from 'react-icons/bs'
 
 
 const NewComment = ({ video, refetch }) => {
@@ -15,7 +18,18 @@ const NewComment = ({ video, refetch }) => {
     const [loading, setLoading] = useState(false)
     const [showButtons, setShowButtons] = useState(false)
     const [comment, setComment] = useState('')
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+    const [postEmoji, setEmoji] = useState(null)
+    const emojiRef = useRef(null)
+    useOutsideClick(emojiRef, () => { setShowEmojiPicker(false) })   
     const channel = video.ProfileEntryResponse
+
+    useEffect(() => {
+        if (postEmoji && postEmoji.emoji.trim().length > 0) {
+            setComment(comment + postEmoji.emoji)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [postEmoji])
 
 
     const submitComment = async () => {
@@ -80,6 +94,37 @@ const NewComment = ({ video, refetch }) => {
                         }}
                         mentionsSelector="input-mentions-textarea-small h-20 md:h-10"
                     />
+                    {showButtons ?
+                        <div
+                            ref={emojiRef}
+                            className='mt-2 relative inline-flex'
+                        >
+                            {showEmojiPicker ?
+                                <BsFillEmojiSmileFill
+                                    onClick={() => setShowEmojiPicker(false)}
+                                    className='text-brand-500 cursor-pointer relative'
+                                    size={19}
+                                /> :
+                                <BsEmojiSmile
+                                    onClick={() => setShowEmojiPicker(true)}
+                                    size={19}
+                                    className='cursor-pointer relative'
+                                />
+                            }
+                            {showEmojiPicker && (
+                                <div className='absolute top-10 left-0 z-20' >
+                                    <EmojiPicker
+                                        emojiStyle={EmojiStyle.TWITTER}
+                                        onEmojiClick={setEmoji}
+                                        lazyLoadEmojis={true}
+                                        previewConfig={{
+                                            showPreview: false
+                                        }}
+                                    />
+                                </div>   
+                            )}
+                        </div>
+                    : null}
                 </div>
                 {showButtons ?
                     <div className='flex justify-end space-x-3'>

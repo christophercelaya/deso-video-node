@@ -8,6 +8,7 @@ import VideoMeta from './VideoMeta'
 import VideoViews from './VideoViews'
 import { CREATOR_VIDEO_CATEGORIES } from '@app/data/categories'
 import Link from 'next/link'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 
 const AboutChannel = ({video }) => {
   const channel = video.ProfileEntryResponse
@@ -36,6 +37,35 @@ const AboutChannel = ({video }) => {
             </Linkify>
           </div>
         )}
+        <div className="flex mt-4">
+          <div className="flex text-sm items-center space-x-2">
+            <span>Category:</span>
+            <Link
+              href={`/explore/${video?.category}`}
+              className="text-blue-500 hover:text-brand-500"
+            >
+              {
+                CREATOR_VIDEO_CATEGORIES.find((category) => category.tag === video?.category)?.name
+              }
+            </Link>
+          </div>
+        </div>
+        {JSON.parse(video?.tags).length > 0 ?
+          <div className="flex mt-4">
+            <div className="flex text-sm items-center space-x-2">
+              <span>Tags:</span>
+              {JSON.parse(video?.tags)?.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/hashtag/${tag.toLowerCase()}`}
+                  className="text-blue-500 hover:text-brand-500"
+                >
+                  #{tag.toLowerCase()}
+                </Link>
+              ))}
+            </div>
+          </div>
+        : null}
         {showMore && (
           <div className="inline-flex mt-3">
             <button
@@ -55,33 +85,10 @@ const AboutChannel = ({video }) => {
             </button>
           </div>
         )}
-        <div className="flex mt-4">
-          <div className="flex text-sm items-center space-x-2">
-            <span>Category:</span>
-            <Link
-              href={`/explore/${video?.category}`}
-              className="text-blue-500 hover:text-brand-500"
-            >
-              {
-                CREATOR_VIDEO_CATEGORIES.find((category) => category.tag === video?.category)?.name
-              }
-            </Link>
-          </div>
-        </div>
-        <div className="flex mt-4">
-          <div className="flex text-sm items-center space-x-2">
-            <span>Tags:</span>
-            {JSON.parse(video?.tags)?.map((tag) => (
-              <Link
-                key={tag}
-                href={`/hashtag/${tag.toLowerCase()}`}
-                className="text-blue-500 hover:text-brand-500"
-              >
-                #{tag.toLowerCase()}
-              </Link>
-            ))}
-          </div>
-        </div>
+        
+        <span className="flex items-center space-x-1 text-sm mt-4 outline-none">
+          <FaExternalLinkAlt size={12} /> <span>View on <Link href={`https://diamondapp.com/posts/${video.posthash}`} target='_blank' >DiamondApp</Link></span>
+        </span>
       </div>
     </div>
   )
