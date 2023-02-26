@@ -31,7 +31,7 @@ function ChannelInfo({ following, followers, channel }) {
             return toast.error('Please login to Subscribe this user');
         }
         try{
-            const deso = new Deso(DESO_CONFIG);
+            const deso = new Deso();
             setSubscribing(true)
             const isFollow = follow ? true : false;
             const request = {

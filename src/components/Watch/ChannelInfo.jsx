@@ -32,41 +32,47 @@ function ChannelInfo({ views, video, channel }) {
     // const { data: asset } = useAsset(video?.asset_id);
 
     useEffect(() => {
-        const deso = new Deso(DESO_CONFIG);
-        async function getFollowers() {
-            try {
-                const request = {
-                    PublicKeyBase58Check: video.ProfileEntryResponse.PublicKeyBase58Check,
-                    GetEntriesFollowingUsername: true
-                };
-                const response = await deso.social.getFollowsStateless(request);
-                setFollowers(response.NumFollowers);
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
-                toast.error("Something went wrong!");
-                setLoading(false);
+        if (video) {
+            getFollowers()
+            if (isLoggedIn) {
+                checkFollowing()
             }
         }
-        
-        async function checkFollowing() {
-            const request = {
-                PublicKeyBase58Check: reader,
-                IsFollowingPublicKeyBase58Check: video.ProfileEntryResponse.PublicKeyBase58Check
-            };
-            try {
-                const response = await deso.social.isFollowingPublicKey(request);
-                setFollow(response?.data?.IsFollowing);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [video, isLoggedIn])
 
-            } catch (error) {
-                console.log(error);
-            }
+    
+    const getFollowers = async() => {
+        const deso = new Deso();
+        try {
+            const request = {
+                PublicKeyBase58Check: video.user_id,
+                GetEntriesFollowingUsername: true
+            };
+            const response = await deso.social.getFollowsStateless(request);
+            setFollowers(response.NumFollowers);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong!");
+            setLoading(false);
         }
-        getFollowers()
-        if (isLoggedIn) {
-            checkFollowing()
+    }
+        
+    const checkFollowing = async() => {
+        const deso = new Deso();
+        const request = {
+            PublicKeyBase58Check: reader,
+            IsFollowingPublicKeyBase58Check: video.user_id
+        };
+        try {
+            const response = await deso.social.isFollowingPublicKey(request);
+            setFollow(response?.IsFollowing);
+
+        } catch (error) {
+            console.log(error);
         }
-    }, [video, reader, isLoggedIn])
+    }
 
     const onFollow = async() => {
         if (!isLoggedIn) {
@@ -78,7 +84,7 @@ function ChannelInfo({ views, video, channel }) {
             const isFollow = follow ? true : false;
             const request = {
                 IsUnfollow: isFollow,
-                FollowedPublicKeyBase58Check: video.ProfileEntryResponse.PublicKeyBase58Check,
+                FollowedPublicKeyBase58Check: video.user_id,
                 FollowerPublicKeyBase58Check: reader
             };
             const response = await deso.social.createFollowTxnStateless(request);

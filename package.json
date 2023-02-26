@@ -24,6 +24,7 @@
     "clsx": "^1.2.1",
     "dayjs": "^1.11.6",
     "deso-protocol": "^0.7.37",
+    "emoji-picker-react": "^4.4.7",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "filereader-stream": "^2.0.0",

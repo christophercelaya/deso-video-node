@@ -72,40 +72,6 @@ const Channel = () => {
     }, [query])
 
     useEffect(() => {
-        const deso = new Deso(DESO_CONFIG);
-        async function getFollowers() {
-            try {
-                const request = {
-                    PublicKeyBase58Check: channel.PublicKeyBase58Check,
-                    GetEntriesFollowingUsername: true
-                };
-                const response = await deso.social.getFollowsStateless(request);
-                setFollowers(response.NumFollowers);
-                setisLoading(false)
-                    
-            } catch (error) {
-                console.log(error);
-                toast.error("Something went wrong!");
-            }
-        }
-        
-        async function checkFollowing() {
-            const request = {
-                PublicKeyBase58Check: reader,
-                IsFollowingPublicKeyBase58Check: channel.PublicKeyBase58Check
-            };
-            try {
-                const response = await deso.social.isFollowingPublicKey(request);
-                if (response) {
-                    setFollow(response.IsFollowing);
-                    setisLoading(false)
-                }
-
-            } catch (error) {
-                console.log(error);
-                //toast.error("Something went wrong!");
-            }
-        }
         if (isFetched && channel) {
             getFollowers()
             if (isLoggedIn) {
@@ -121,6 +87,43 @@ const Channel = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isFetched, channel])
+
+    
+    const getFollowers = async() => {
+        const deso = new Deso();
+        try {
+            const request = {
+                PublicKeyBase58Check: channel.PublicKeyBase58Check,
+                GetEntriesFollowingUsername: true
+            };
+            const response = await deso.social.getFollowsStateless(request);
+            setFollowers(response.NumFollowers);
+            setisLoading(false)
+                
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong!");
+        }
+    }
+    
+    const checkFollowing = async() => {
+        const deso = new Deso();
+        const request = {
+            PublicKeyBase58Check: reader,
+            IsFollowingPublicKeyBase58Check: channel.PublicKeyBase58Check
+        };
+        try {
+            const response = await deso.social.isFollowingPublicKey(request);
+            if (response) {
+                setFollow(response.IsFollowing);
+                setisLoading(false)
+            }
+
+        } catch (error) {
+            console.log(error);
+            //toast.error("Something went wrong!");
+        }
+    }
 
     
     const FetchProfileStats = async (username) => {

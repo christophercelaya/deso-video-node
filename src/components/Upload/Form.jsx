@@ -1,18 +1,19 @@
 import useAppStore from '@store/app'
 import { APP } from '@utils/constants'
 import { NextSeo } from 'next-seo'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { BiX } from 'react-icons/bi'
 import { Button } from '../UI/Button'
 import InputMentions from '../UI/InputMentions'
 import Category from './Category'
 import UploadVideo from './Video'
-import { BsCheck } from 'react-icons/bs'
+import { BsCheck, BsEmojiSmile, BsFillEmojiSmileFill } from 'react-icons/bs'
 import { Combobox, Transition } from '@headlessui/react'
 import { LANGUAGES } from '@app/data/languages'
 import { HiChevronUpDown } from "react-icons/hi2";
-import { AiFillCloseCircle } from 'react-icons/ai'
 import { Switch } from '@headlessui/react'
+import EmojiPicker, { EmojiStyle } from 'emoji-picker-react'
+import useOutsideClick from '@utils/hooks/useOutsideClick'
 
 
 function UploadForm({onUpload, onCancel}) {
@@ -25,6 +26,17 @@ function UploadForm({onUpload, onCancel}) {
     const [language, setLanguage] = useState(LANGUAGES[0])
     const [query, setQuery] = useState('')
     const [isSensitiveContent, setSensitiveContent] = useState(false)
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+    const [postEmoji, setEmoji] = useState(null)
+    const emojiRef = useRef(null)
+    useOutsideClick(emojiRef, () => { setShowEmojiPicker(false) })    
+    useEffect(() => {
+        if (postEmoji && postEmoji.emoji.trim().length > 0) {
+            setUploadedVideo({ description: uploadedVideo.description + postEmoji.emoji })
+            setDescription(uploadedVideo.description + postEmoji.emoji)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [postEmoji])
 
     useEffect(() => {
         setUploadedVideo({ language: language })
@@ -35,6 +47,8 @@ function UploadForm({onUpload, onCancel}) {
         setUploadedVideo({ isSensitiveContent: isSensitiveContent })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSensitiveContent])
+
+
 
     const filteredLanguage =
     query === ''
@@ -93,7 +107,7 @@ function UploadForm({onUpload, onCancel}) {
                                     mentionsSelector="input-mentions-single"
                                 />
                             </div>
-                            <div className='mb-4 flex flex-col space-y-2'>
+                            <div className='mb-4 flex flex-col space-y-2 relative'>
                                 <InputMentions
                                     label="Description"
                                     placeholder="Tell viewers about your video (type @ to mention a channel) or add #Hashtags"
@@ -107,6 +121,35 @@ function UploadForm({onUpload, onCancel}) {
                                     }}
                                     mentionsSelector="input-mentions-textarea"
                                 />
+                                <div
+                                    ref={emojiRef}
+                                    className='mt-2 relative inline-flex'
+                                >
+                                    {showEmojiPicker ?
+                                        <BsFillEmojiSmileFill
+                                            onClick={() => setShowEmojiPicker(false)}
+                                            className='text-brand-500 cursor-pointer relative'
+                                            size={19}
+                                        /> :
+                                        <BsEmojiSmile
+                                            onClick={() => setShowEmojiPicker(true)}
+                                            size={19}
+                                            className='cursor-pointer relative'
+                                        />
+                                    }
+                                    {showEmojiPicker && (
+                                        <div className='absolute top-10 left-0 z-20' >
+                                            <EmojiPicker
+                                                emojiStyle={EmojiStyle.TWITTER}
+                                                onEmojiClick={setEmoji}
+                                                lazyLoadEmojis={true}
+                                                previewConfig={{
+                                                    showPreview: false
+                                                }}
+                                            />
+                                        </div>   
+                                    )}
+                                </div>
                             </div>
                             <div className="mb-4 ">
                                 <Category />
