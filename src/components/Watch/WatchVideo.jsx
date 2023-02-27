@@ -69,11 +69,11 @@ const WatchVideo = () => {
                 <NextSeo
                     title={video ? video?.title : 'Watch'}
                     description={video ? video?.title : 'Watch'}
-                    canonical={`${APP.URL}/watch/${router.asPath}`}
+                    canonical={`${APP.URL}${router.asPath}`}
                     openGraph={{
                         title: video ? video?.title : 'Watch',
                         description: video ? video?.title : 'Watch',
-                        url: `${APP.URL}/watch/${router.asPath}`,
+                        url: `${APP.URL}${router.asPath}`,
                         images: [
                             {
                                 url: video ? sanitizeIPFSURL(video?.thumbnail) : '',
